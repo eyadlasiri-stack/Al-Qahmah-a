@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أكاديمية القحمة الرياضية | السجل الذكي</title>
+    <title>أكاديمية القحمة الرياضية | السجل الرسمي</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-blue: #002d5a;
-            --secondary-blue: #0056b3;
-            --accent-gold: #ffd700; /* لمسة ذهبية للتميز الرياضي */
-            --light-bg: #f8fbff;
+            --primary-blue: #002d5a; /* أزرق ملكي غامق */
+            --secondary-blue: #0056b3; /* أزرق رياضي */
+            --accent-gold: #ffd700; /* لمسة ذهبية */
+            --light-bg: #f4f7fa;
             --white: #ffffff;
         }
 
@@ -22,50 +22,57 @@
             color: #333;
         }
 
-        /* --- الهيدر المنفصل الفخم --- */
+        /* --- الهيدر المنفصل والمرتب --- */
         .hero-header {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            background: linear-gradient(180deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
             color: white;
-            padding: 40px 20px;
+            padding: 30px 20px;
             text-align: center;
-            border-bottom: 5px solid var(--accent-gold);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            margin-bottom: 30px;
+            border-bottom: 4px solid var(--accent-gold);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        .logo-img {
+            width: 140px; /* حجم الشعار المناسب */
+            height: auto;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); /* ظل للشعار */
         }
 
         .hero-header h1 {
-            font-size: 42px;
+            font-size: 32px;
             font-weight: 900;
             margin: 0;
             letter-spacing: 1px;
         }
 
         .hero-header p {
-            font-size: 18px;
-            margin: 10px 0 0;
-            opacity: 0.9;
-            font-weight: 400;
+            font-size: 16px;
+            margin: 8px 0 0;
+            background: rgba(255, 255, 255, 0.1);
+            display: inline-block;
+            padding: 4px 15px;
+            border-radius: 20px;
         }
 
         #save-indicator {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 5px 15px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            font-size: 13px;
+            display: block;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #4ade80;
             opacity: 0;
             transition: 0.3s;
         }
 
-        /* --- حاوية الجدول --- */
+        /* --- تنسيق الجدول المرتب --- */
         .main-content {
-            max-width: 95%;
-            margin: 0 auto 100px;
+            max-width: 98%;
+            margin: 0 auto 80px;
             background: var(--white);
-            border-radius: 15px;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.05);
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
         }
 
         table {
@@ -74,98 +81,86 @@
             min-width: 1000px;
         }
 
-        /* تثبيت رأس الجدول */
+        /* تثبيت رأس الجدول بلون فخم */
         thead th {
             position: sticky;
             top: 0;
             background-color: var(--primary-blue);
             color: white;
-            padding: 20px 10px;
+            padding: 18px 10px;
             z-index: 100;
-            font-size: 16px;
-            border-bottom: 3px solid var(--accent-gold);
+            font-size: 15px;
+            border-bottom: 2px solid var(--accent-gold);
         }
 
         td {
-            border-bottom: 1px solid #edf2f7;
+            border-bottom: 1px solid #f0f4f8;
             padding: 0;
         }
 
+        /* خانات الإدخال - مريحة جداً */
         input {
             width: 100%;
-            height: 60px; /* خانات واسعة جداً ومريحة */
+            height: 55px;
             border: none;
-            padding: 0 15px;
+            padding: 0 10px;
             text-align: center;
-            font-size: 16px;
+            font-size: 15px;
             font-family: 'Cairo';
             background-color: transparent;
-            color: #4a5568;
-            transition: all 0.2s;
+            color: #444;
+            transition: 0.2s;
         }
 
         input:focus {
             outline: none;
-            background-color: #fff9e6; /* لون تمييز عند الكتابة */
-            color: var(--primary-blue);
+            background-color: #fffbe6; /* تلوين الخانة عند الكتابة */
             font-weight: bold;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.02);
         }
 
-        tr:hover { background-color: #f1f7ff; }
-        
-        /* تلوين عمود الرقم م */
+        tr:hover { background-color: #f8fbff; }
+
         .index-col {
-            background-color: #f7fafc;
+            background-color: #f1f5f9;
             font-weight: bold;
             color: var(--primary-blue);
-            width: 60px;
+            width: 50px;
             text-align: center;
         }
 
-        /* --- زر التصدير العائم --- */
-        .fab-container {
+        /* زر التصدير العائم */
+        .export-fab {
             position: fixed;
-            bottom: 30px;
-            left: 30px;
-            z-index: 999;
-        }
-
-        .btn-export {
-            background: var(--primary-blue);
+            bottom: 25px;
+            left: 25px;
+            z-index: 1000;
+            background: #28a745;
             color: white;
             border: none;
-            padding: 15px 30px;
+            padding: 12px 25px;
             border-radius: 50px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             font-family: 'Cairo';
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,45,90,0.3);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
             transition: 0.3s;
         }
 
-        .btn-export:hover {
-            background: var(--secondary-blue);
-            transform: translateY(-5px);
-            box-shadow: 0 15px 25px rgba(0,45,90,0.4);
-        }
+        .export-fab:hover { transform: scale(1.05); background: #218838; }
 
-        /* تحسينات الجوال */
         @media (max-width: 768px) {
-            .hero-header h1 { font-size: 28px; }
-            .main-content { max-width: 100%; border-radius: 0; }
+            .hero-header h1 { font-size: 24px; }
+            .logo-img { width: 110px; }
         }
     </style>
 </head>
 <body>
 
     <header class="hero-header">
+        <img src="https://i.ibb.co/QF1mKFpn/IMG-8418.png" alt="شعار أكاديمية القحمة" class="logo-img">
         <h1>أكاديمية القحمة الرياضية</h1>
-        <p>المنصة الذكية لإدارة بيانات اللاعبين</p>
+        <p>🏆 سجل بيانات ورسوم اللاعبين 🏆</p>
         <div id="save-indicator">✓ تم الحفظ تلقائياً</div>
     </header>
 
@@ -187,34 +182,32 @@
         </table>
     </div>
 
-    <div class="fab-container">
-        <button class="btn-export" onclick="exportToExcel()">📊 تصدير ملف Excel</button>
-    </div>
+    <button class="export-fab" onclick="exportToExcel()">📊 تصدير Excel</button>
 
     <script>
         const tableBody = document.getElementById('tableBody');
         const saveIndicator = document.getElementById('save-indicator');
 
-        // توليد الصفوف
+        // توليد 100 صف
         function initTable() {
             let html = '';
             for (let i = 1; i <= 100; i++) {
                 html += `
                     <tr>
                         <td class="index-col">${i}</td>
-                        <td><input type="text" oninput="autoSave()" placeholder="---"></td>
-                        <td><input type="text" oninput="autoSave()" placeholder="---"></td>
-                        <td><input type="text" oninput="autoSave()" placeholder="---"></td>
-                        <td><input type="text" oninput="autoSave()" placeholder="---"></td>
-                        <td><input type="text" oninput="autoSave()" placeholder="---"></td>
-                        <td><input type="text" oninput="autoSave()" placeholder="---"></td>
+                        <td><input type="text" oninput="autoSave()" placeholder="..."></td>
+                        <td><input type="text" oninput="autoSave()" placeholder="..."></td>
+                        <td><input type="text" oninput="autoSave()" placeholder="..."></td>
+                        <td><input type="text" oninput="autoSave()" placeholder="..."></td>
+                        <td><input type="text" oninput="autoSave()" placeholder="..."></td>
+                        <td><input type="text" oninput="autoSave()" placeholder="..."></td>
                     </tr>
                 `;
             }
             tableBody.innerHTML = html;
         }
 
-        // حفظ تلقائي ذكي
+        // حفظ تلقائي
         let timer;
         function autoSave() {
             clearTimeout(timer);
@@ -225,18 +218,16 @@
                     const vals = Array.from(row.querySelectorAll('input')).map(i => i.value);
                     if (vals.some(v => v.trim() !== "")) data.push(vals);
                 });
-                localStorage.setItem('alqahma_pro_data', JSON.stringify(data));
+                localStorage.setItem('alqahma_final_data', JSON.stringify(data));
                 
-                // إشعار الحفظ
                 saveIndicator.style.opacity = "1";
-                setTimeout(() => { saveIndicator.style.opacity = "0"; }, 1500);
-            }, 800);
+                setTimeout(() => { saveIndicator.style.opacity = "0"; }, 1000);
+            }, 700);
         }
 
-        // استعادة البيانات
         window.onload = () => {
             initTable();
-            const saved = JSON.parse(localStorage.getItem('alqahma_pro_data'));
+            const saved = JSON.parse(localStorage.getItem('alqahma_final_data'));
             if (saved) {
                 const rows = tableBody.querySelectorAll('tr');
                 saved.forEach((rowData, index) => {
@@ -248,17 +239,16 @@
             }
         };
 
-        // تصدير Excel
         function exportToExcel() {
             const table = document.getElementById("playersTable");
             const template = `
                 <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" lang="ar">
-                <head><meta charset="utf-8"><style>table{direction:rtl; border:1px solid #ccc; font-family:Cairo, sans-serif;} th{background:#002d5a; color:#fff; padding:10px;} td{border:1px solid #eee; text-align:center; padding:8px;}</style></head>
+                <head><meta charset="utf-8"><style>table{direction:rtl; border:1px solid #ccc; font-family:Cairo;} th{background:#002d5a; color:#fff; padding:10px;} td{border:1px solid #eee; text-align:center; padding:5px;}</style></head>
                 <body>${table.outerHTML}</body></html>`;
             const url = 'data:application/vnd.ms-excel;charset=utf-8,' + encodeURIComponent(template);
             const link = document.createElement("a");
             link.href = url;
-            link.download = "سجل_أكاديمية_القحمة_الرياضية.xls";
+            link.download = "سجل_أكاديمية_القحمة.xls";
             link.click();
         }
     </script>
