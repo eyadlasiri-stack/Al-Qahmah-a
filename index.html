@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أكاديمية القحمة الرياضية - سجل مريح</title>
+    <title>أكاديمية القحمة - حفظ تلقائي</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -11,17 +11,18 @@
             --accent-blue: #0056b3;
             --bg-light: #f4f9ff;
             --white: #ffffff;
+            --save-green: #28a745;
         }
 
         body {
             font-family: 'Cairo', sans-serif;
             background-color: var(--bg-light);
             margin: 0;
-            padding: 10px; /* تقليل الحواف الخارجية لزيادة مساحة الجدول */
+            padding: 10px;
         }
 
         .container {
-            max-width: 1350px; /* توسيع الحاوية لتأخذ مساحة الشاشة */
+            max-width: 1350px;
             margin: auto;
             background: var(--white);
             padding: 20px;
@@ -30,24 +31,35 @@
             border-top: 10px solid var(--primary-blue);
         }
 
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { color: var(--primary-blue); margin: 0; font-size: 28px; }
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
 
-        /* أهم جزء: تحسين منطقة الجدول */
+        .header h1 { color: var(--primary-blue); margin: 0; font-size: 26px; }
+
+        /* مؤشر الحفظ التلقائي */
+        #autoSaveStatus {
+            font-size: 14px;
+            color: var(--save-green);
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
         .table-wrapper {
-            max-height: 70vh; /* جعل الارتفاع 70% من طول الشاشة */
+            max-height: 75vh;
             overflow-y: auto;
             border: 2px solid #eee;
             border-radius: 10px;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 900px; /* يمنع الجدول من الانضغاط في الشاشات الصغيرة */
-        }
+        table { width: 100%; border-collapse: collapse; min-width: 900px; }
 
-        /* تثبيت العناوين فوق */
         thead th {
             position: sticky;
             top: 0;
@@ -55,67 +67,53 @@
             color: white;
             padding: 15px 10px;
             z-index: 100;
-            font-size: 16px;
             border: 1px solid #00264d;
         }
 
-        td {
-            border: 1px solid #eee;
-            padding: 0; /* إلغاء الحشو للسماح للـ input بأخذ المساحة كاملة */
-        }
+        td { border: 1px solid #eee; padding: 0; }
 
-        /* تحسين شكل المربعات (الخانات) */
         input {
             width: 100%;
-            height: 45px; /* تكبير ارتفاع الخانة لراحة اليد والعين */
+            height: 48px;
             border: none;
             padding: 0 10px;
             text-align: center;
             font-size: 15px;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Cairo';
             background-color: transparent;
             box-sizing: border-box;
-            transition: 0.2s;
         }
 
-        /* تلوين الخانة عند الضغط عليها */
         input:focus {
             outline: none;
-            background-color: #fffde7; /* لون أصفر خفيف جداً للتنبيه */
+            background-color: #fffde7;
             border-bottom: 3px solid var(--accent-blue);
         }
 
-        /* تلوين الصف بالكامل عند المرور عليه */
         tr:hover { background-color: #f1f7ff; }
 
-        .controls {
-            margin-top: 20px;
+        .footer-controls {
+            margin-top: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
         }
 
-        .btns { display: flex; gap: 10px; }
-
         button {
-            padding: 12px 25px;
+            padding: 10px 25px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             font-family: 'Cairo';
             color: white;
+            background-color: var(--primary-blue);
             transition: 0.3s;
         }
 
-        #saveBtn { background-color: #28a745; }
-        #exportBtn { background-color: var(--primary-blue); }
-        button:hover { opacity: 0.9; transform: translateY(-2px); }
+        button:hover { opacity: 0.9; }
 
-        .hint { color: #666; font-size: 13px; }
-
+        .hint { color: #888; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -123,14 +121,14 @@
 <div class="container">
     <div class="header">
         <h1>أكاديمية القحمة الرياضية</h1>
-        <p>سجل بيانات المشتركين (كشف 100 لاعب)</p>
+        <div id="autoSaveStatus">✓ تم الحفظ تلقائياً</div>
     </div>
 
     <div class="table-wrapper">
         <table id="playersTable">
             <thead>
                 <tr>
-                    <th style="width: 40px;">م</th>
+                    <th style="width: 45px;">م</th>
                     <th>اسم اللاعب</th>
                     <th>تاريخ التسليم</th>
                     <th>الرسوم</th>
@@ -143,54 +141,66 @@
         </table>
     </div>
 
-    <div class="controls">
-        <div class="btns">
-            <button id="saveBtn" onclick="saveData()">💾 حفظ البيانات</button>
-            <button id="exportBtn" onclick="exportToExcel()">📊 تصدير Excel</button>
-        </div>
-        <p class="hint">* العناوين ثابتة بالأعلى لسهولة التعبئة. اضغط حفظ بعد كل تعديل.</p>
+    <div class="footer-controls">
+        <button onclick="exportToExcel()">📊 تصدير إلى Excel</button>
+        <p class="hint">ميزة الحفظ التلقائي مفعلة. بياناتك في أمان.</p>
     </div>
 </div>
 
 <script>
     const tableBody = document.getElementById('tableBody');
+    const autoSaveStatus = document.getElementById('autoSaveStatus');
 
-    // توليد 100 صف مريح
+    // 1. توليد الصفوف وإضافة ميزة الحفظ عند الكتابة
     function generateRows() {
         let rowsHtml = '';
         for (let i = 1; i <= 100; i++) {
             rowsHtml += `
                 <tr>
                     <td style="background:#f9f9f9; font-weight:bold; text-align:center; color:#003366;">${i}</td>
-                    <td><input type="text" placeholder="..."></td>
-                    <td><input type="text" placeholder="..."></td>
-                    <td><input type="text" placeholder="..."></td>
-                    <td><input type="text" placeholder="..."></td>
-                    <td><input type="text" placeholder="..."></td>
-                    <td><input type="text" placeholder="..."></td>
+                    <td><input type="text" oninput="autoSave()" placeholder="..."></td>
+                    <td><input type="text" oninput="autoSave()" placeholder="..."></td>
+                    <td><input type="text" oninput="autoSave()" placeholder="..."></td>
+                    <td><input type="text" oninput="autoSave()" placeholder="..."></td>
+                    <td><input type="text" oninput="autoSave()" placeholder="..."></td>
+                    <td><input type="text" oninput="autoSave()" placeholder="..."></td>
                 </tr>
             `;
         }
         tableBody.innerHTML = rowsHtml;
     }
 
-    function saveData() {
-        const rows = document.querySelectorAll('#tableBody tr');
-        const allData = [];
-        rows.forEach(row => {
-            const inputs = row.querySelectorAll('input');
-            const rowData = Array.from(inputs).map(input => input.value);
-            if (rowData.some(val => val.trim() !== "")) {
-                allData.push(rowData);
-            }
-        });
-        localStorage.setItem('qahmah_v3_luxury', JSON.stringify(allData));
-        alert('✅ تم الحفظ بنجاح!');
+    // 2. دالة الحفظ التلقائي
+    let saveTimeout;
+    function autoSave() {
+        // نستخدم Timeout عشان ما يثقل المتصفح مع كل حرف، يحفظ بعد التوقف عن الكتابة بـ 500ms
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(() => {
+            const rows = document.querySelectorAll('#tableBody tr');
+            const allData = [];
+            
+            rows.forEach(row => {
+                const inputs = row.querySelectorAll('input');
+                const rowData = Array.from(inputs).map(input => input.value);
+                if (rowData.some(val => val.trim() !== "")) {
+                    allData.push(rowData);
+                }
+            });
+
+            localStorage.setItem('qahmah_auto_save', JSON.stringify(allData));
+            
+            // إظهار رسالة "تم الحفظ"
+            autoSaveStatus.style.opacity = "1";
+            setTimeout(() => { autoSaveStatus.style.opacity = "0"; }, 1500);
+            
+            console.log("Data Auto-Saved");
+        }, 500);
     }
 
+    // 3. تحميل البيانات عند فتح الصفحة
     window.onload = function() {
         generateRows();
-        const saved = JSON.parse(localStorage.getItem('qahmah_v3_luxury'));
+        const saved = JSON.parse(localStorage.getItem('qahmah_auto_save'));
         if (saved) {
             const rows = document.querySelectorAll('#tableBody tr');
             saved.forEach((rowData, index) => {
@@ -202,14 +212,14 @@
         }
     };
 
+    // 4. تصدير Excel
     function exportToExcel() {
         let table = document.getElementById("playersTable");
-        let html = table.outerHTML;
-        let template = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" lang="ar"><head><meta charset="utf-8"><style>table{direction:rtl; border:1px solid #ccc;} th{background:#003366; color:#fff;} td{border:1px solid #eee; text-align:center;}</style></head><body>${html}</body></html>`;
+        let template = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" lang="ar"><head><meta charset="utf-8"><style>table{direction:rtl; border:1px solid #ccc;} th{background:#003366; color:#fff;} td{border:1px solid #eee; text-align:center;}</style></head><body>${table.outerHTML}</body></html>`;
         let url = 'data:application/vnd.ms-excel;charset=utf-8,' + encodeURIComponent(template);
         let link = document.createElement("a");
         link.href = url;
-        link.download = "كشف_اكاديمية_القحمة.xls";
+        link.download = "كشف_اكاديمية_القحمة_الرياضية.xls";
         link.click();
     }
 </script>
