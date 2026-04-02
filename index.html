@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أكاديمية القحمة - حفظ تلقائي</title>
+    <title>أكاديمية القحمة - سجل احترافي</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -11,124 +11,129 @@
             --accent-blue: #0056b3;
             --bg-light: #f4f9ff;
             --white: #ffffff;
-            --save-green: #28a745;
         }
 
         body {
             font-family: 'Cairo', sans-serif;
             background-color: var(--bg-light);
             margin: 0;
-            padding: 10px;
+            padding: 0; /* إلغاء الحواف ليكون الانزلاق كامل */
         }
 
         .container {
-            max-width: 1350px;
+            max-width: 100%; /* جعل العرض كامل الشاشة */
             margin: auto;
             background: var(--white);
+            min-height: 100vh;
+        }
+
+        /* هيدر ثابت أو عادي حسب رغبتك، هنا جعلته مريح */
+        .header-section {
+            background: var(--primary-blue);
+            color: white;
             padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
-            border-top: 10px solid var(--primary-blue);
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        .header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 20px;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
-        }
-
-        .header h1 { color: var(--primary-blue); margin: 0; font-size: 26px; }
-
-        /* مؤشر الحفظ التلقائي */
+        .header-section h1 { margin: 0; font-size: 24px; }
+        
         #autoSaveStatus {
             font-size: 14px;
-            color: var(--save-green);
-            font-weight: bold;
+            color: #4ade80; /* أخضر فاتح */
+            margin-top: 5px;
+            height: 20px;
             opacity: 0;
-            transition: opacity 0.5s;
+            transition: 0.3s;
         }
 
-        .table-wrapper {
-            max-height: 75vh;
-            overflow-y: auto;
-            border: 2px solid #eee;
-            border-radius: 10px;
+        /* الجدول الآن بدون scroll داخلي، ينزل مع الصفحة */
+        .table-container {
+            width: 100%;
+            overflow-x: auto; /* للسماح بالتمرير الجانبي فقط في الجوال */
         }
 
-        table { width: 100%; border-collapse: collapse; min-width: 900px; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
 
+        /* العناوين تثبت في أعلى المتصفح عند النزول */
         thead th {
             position: sticky;
-            top: 0;
+            top: 0; /* هذا هو السر، يثبت مع نزول الصفحة */
             background-color: var(--primary-blue);
             color: white;
             padding: 15px 10px;
-            z-index: 100;
+            z-index: 1000;
             border: 1px solid #00264d;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         td { border: 1px solid #eee; padding: 0; }
 
         input {
             width: 100%;
-            height: 48px;
+            height: 55px; /* خانات واسعة ومريحة */
             border: none;
-            padding: 0 10px;
+            padding: 0 15px;
             text-align: center;
-            font-size: 15px;
+            font-size: 16px;
             font-family: 'Cairo';
             background-color: transparent;
-            box-sizing: border-box;
+            transition: 0.2s;
         }
 
         input:focus {
             outline: none;
             background-color: #fffde7;
-            border-bottom: 3px solid var(--accent-blue);
+            border-bottom: 4px solid var(--accent-blue);
         }
 
+        tr:nth-child(even) { background-color: #fcfdfe; }
         tr:hover { background-color: #f1f7ff; }
 
-        .footer-controls {
-            margin-top: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* منطقة الأزرار في الأسفل */
+        .footer-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 2000;
         }
 
-        button {
-            padding: 10px 25px;
+        .export-btn {
+            background-color: #28a745;
+            color: white;
             border: none;
-            border-radius: 8px;
-            cursor: pointer;
+            padding: 15px 25px;
+            border-radius: 50px;
             font-weight: bold;
             font-family: 'Cairo';
-            color: white;
-            background-color: var(--primary-blue);
-            transition: 0.3s;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        button:hover { opacity: 0.9; }
+        .export-btn:hover { transform: scale(1.05); }
 
-        .hint { color: #888; font-size: 12px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header">
+    <div class="header-section">
         <h1>أكاديمية القحمة الرياضية</h1>
         <div id="autoSaveStatus">✓ تم الحفظ تلقائياً</div>
     </div>
 
-    <div class="table-wrapper">
+    <div class="table-container">
         <table id="playersTable">
             <thead>
                 <tr>
-                    <th style="width: 45px;">م</th>
+                    <th style="width: 50px;">م</th>
                     <th>اسم اللاعب</th>
                     <th>تاريخ التسليم</th>
                     <th>الرسوم</th>
@@ -140,24 +145,22 @@
             <tbody id="tableBody"></tbody>
         </table>
     </div>
+</div>
 
-    <div class="footer-controls">
-        <button onclick="exportToExcel()">📊 تصدير إلى Excel</button>
-        <p class="hint">ميزة الحفظ التلقائي مفعلة. بياناتك في أمان.</p>
-    </div>
+<div class="footer-bar">
+    <button class="export-btn" onclick="exportToExcel()">📊 تصدير Excel</button>
 </div>
 
 <script>
     const tableBody = document.getElementById('tableBody');
     const autoSaveStatus = document.getElementById('autoSaveStatus');
 
-    // 1. توليد الصفوف وإضافة ميزة الحفظ عند الكتابة
     function generateRows() {
         let rowsHtml = '';
         for (let i = 1; i <= 100; i++) {
             rowsHtml += `
                 <tr>
-                    <td style="background:#f9f9f9; font-weight:bold; text-align:center; color:#003366;">${i}</td>
+                    <td style="background:#f1f1f1; font-weight:bold; text-align:center; color:#003366;">${i}</td>
                     <td><input type="text" oninput="autoSave()" placeholder="..."></td>
                     <td><input type="text" oninput="autoSave()" placeholder="..."></td>
                     <td><input type="text" oninput="autoSave()" placeholder="..."></td>
@@ -170,15 +173,12 @@
         tableBody.innerHTML = rowsHtml;
     }
 
-    // 2. دالة الحفظ التلقائي
     let saveTimeout;
     function autoSave() {
-        // نستخدم Timeout عشان ما يثقل المتصفح مع كل حرف، يحفظ بعد التوقف عن الكتابة بـ 500ms
         clearTimeout(saveTimeout);
         saveTimeout = setTimeout(() => {
             const rows = document.querySelectorAll('#tableBody tr');
             const allData = [];
-            
             rows.forEach(row => {
                 const inputs = row.querySelectorAll('input');
                 const rowData = Array.from(inputs).map(input => input.value);
@@ -186,21 +186,15 @@
                     allData.push(rowData);
                 }
             });
-
-            localStorage.setItem('qahmah_auto_save', JSON.stringify(allData));
-            
-            // إظهار رسالة "تم الحفظ"
+            localStorage.setItem('qahmah_final_scroll', JSON.stringify(allData));
             autoSaveStatus.style.opacity = "1";
-            setTimeout(() => { autoSaveStatus.style.opacity = "0"; }, 1500);
-            
-            console.log("Data Auto-Saved");
+            setTimeout(() => { autoSaveStatus.style.opacity = "0"; }, 1000);
         }, 500);
     }
 
-    // 3. تحميل البيانات عند فتح الصفحة
     window.onload = function() {
         generateRows();
-        const saved = JSON.parse(localStorage.getItem('qahmah_auto_save'));
+        const saved = JSON.parse(localStorage.getItem('qahmah_final_scroll'));
         if (saved) {
             const rows = document.querySelectorAll('#tableBody tr');
             saved.forEach((rowData, index) => {
@@ -212,14 +206,13 @@
         }
     };
 
-    // 4. تصدير Excel
     function exportToExcel() {
         let table = document.getElementById("playersTable");
-        let template = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" lang="ar"><head><meta charset="utf-8"><style>table{direction:rtl; border:1px solid #ccc;} th{background:#003366; color:#fff;} td{border:1px solid #eee; text-align:center;}</style></head><body>${table.outerHTML}</body></html>`;
+        let template = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" lang="ar"><head><meta charset="utf-8"><style>table{direction:rtl; border:1px solid #ccc;} th{background:#003366; color:#fff; padding:10px;} td{border:1px solid #eee; text-align:center; padding:5px;}</style></head><body>${table.outerHTML}</body></html>`;
         let url = 'data:application/vnd.ms-excel;charset=utf-8,' + encodeURIComponent(template);
         let link = document.createElement("a");
         link.href = url;
-        link.download = "كشف_اكاديمية_القحمة_الرياضية.xls";
+        link.download = "سجل_اكاديمية_القحمة.xls";
         link.click();
     }
 </script>
