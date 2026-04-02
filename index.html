@@ -1,61 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
-
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>أكاديمية القحمة الرياضية - سجل المشتركين</title>
     
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
         /* --- قسم التصميم (CSS) --- */
         :root {
-            --main-blue: #002d5a; /* أزرق ملكي غامق */
-            --accent-blue: #0056b3; /* أزرق متوسط */
-            --bg-light: #f0f7ff; /* خلفية مائلة للأزرق */
-            --white: #ffffff;
+            --primary-blue: #003366;    /* أزرق ملكي غامق جداً (لون الطقم) */
+            --accent-blue: #0056b3;     /* أزرق رياضي متوسط */
+            --bg-light: #f0f8ff;      /* خلفية أبيض مائل للأزرق الفاتح */
+            --text-dark: #333333;       /* لون نص داكن مريح */
+            --white: #ffffff;          /* أبيض صافي */
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* ظل خفيف */
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Cairo', sans-serif; /* استخدام خط القاهرة الرياضي */
             background-color: var(--bg-light);
             margin: 0;
             padding: 20px;
+            color: var(--text-dark);
         }
 
+        /* حاوية الموقع الرئيسية بصفر - تحسين الظل */
         .container {
-            max-width: 1200px;
+            max-width: 1250px;
             margin: auto;
             background: var(--white);
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            border-top: 10px solid var(--main-blue);
+            padding: 30px;
+            border-radius: 20px; /* زوايا دائرية أكثر */
+            box-shadow: var(--shadow);
+            border-top: 10px solid var(--primary-blue); /* شريط علوي بلون الفريق */
         }
 
+        /* الهيدر - تحسين المسافات والشكل */
         .header {
             text-align: center;
-            color: var(--main-blue);
-            margin-bottom: 25px;
+            color: var(--primary-blue);
+            margin-bottom: 35px;
         }
 
-        .header h1 { font-size: 32px; margin: 0 0 10px 0; }
-        .header p { font-size: 18px; margin: 0; opacity: 0.8; }
+        .header h1 { 
+            font-size: 36px; 
+            font-weight: 700;
+            margin: 0 0 10px 0; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1); /* ظل خفيف للنص */
+        }
+        .header p { 
+            font-size: 20px; 
+            margin: 0; 
+            opacity: 0.8; 
+            background: rgba(0, 51, 102, 0.05); /* خلفية خفيفة للفقرة */
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+        }
 
+        /* تحسين شكل الجدول - جعل الصفوف تظهر بشكل أفضل */
         .table-wrapper {
             max-height: 650px;
             overflow-y: auto;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            border: 1px solid rgba(0, 51, 102, 0.1);
+            border-radius: 12px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
         }
 
         table {
@@ -66,75 +77,90 @@
         thead th {
             position: sticky;
             top: 0;
-            background-color: var(--main-blue);
-            color: white;
-            padding: 15px;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 18px 15px; /* مسافة داخلية أكبر */
             z-index: 10;
-            border: 1px solid #001f3f;
+            font-weight: 700;
+            font-size: 15px;
+            border: 1px solid rgba(0, 51, 102, 0.2);
+            text-transform: uppercase; /* جعل العناوين قوية */
         }
 
         td {
-            padding: 5px;
+            padding: 5px; /* مسافة أصغر داخل الصف لتقليل الطول */
             border: 1px solid #eee;
             text-align: center;
+            font-size: 14px;
         }
 
-        tr:nth-child(even) { background-color: #f8faff; }
-        tr:hover { background-color: #eef5ff; }
+        tr:nth-child(even) { background-color: rgba(240, 248, 255, 0.5); }
+        tr:hover { background-color: rgba(0, 86, 179, 0.05); } /* تأثير حركي عند المرور */
 
+        /* تحسين شكل خانات الإدخال - جعلها نظيفة وأنيقة */
         input {
-            width: 90%;
-            border: 1px solid transparent;
+            width: 95%;
+            border: 1px solid rgba(0, 0, 0, 0.05); /* ظل خفيف جداً */
             padding: 10px;
             text-align: center;
             font-size: 14px;
-            border-radius: 4px;
-            transition: 0.2s;
+            border-radius: 5px;
+            transition: 0.3s;
+            background-color: transparent;
         }
 
         input:focus {
             outline: none;
             border-color: var(--accent-blue);
-            background: #fff;
-            box-shadow: 0 0 5px rgba(0,86,179,0.2);
+            background: var(--white);
+            box-shadow: 0 0 8px rgba(0, 86, 179, 0.1);
         }
 
+        /* تحسين منطقة الأزرار - جعلها مرتبة */
         .controls {
-            margin-top: 25px;
-            padding-top: 15px;
-            border-top: 2px solid #eee;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
             display: flex;
             align-items: center;
-            gap: 15px;
+            justify-content: space-between; /* الأزرار على اليسار والرسالة على اليمين */
             flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
         }
 
         button {
             padding: 12px 30px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             font-size: 16px;
             transition: 0.3s;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
         }
 
-        #saveBtn { background-color: #28a745; color: white; }
+        #saveBtn { background-color: #28a745; color: var(--white); }
         #saveBtn:hover { background-color: #218838; transform: translateY(-2px); }
 
-        #exportBtn { background-color: var(--main-blue); color: white; }
+        #exportBtn { background-color: var(--primary-blue); color: var(--white); }
         #exportBtn:hover { background-color: var(--accent-blue); transform: translateY(-2px); }
 
-        .status-msg { font-size: 13px; color: #666; font-style: italic; }
+        .status-msg { font-size: 13px; color: #777; font-style: italic; }
 
         /* ستايل مخصص للطباعة */
         @media print {
-            .controls { display: none; }
+            .controls, .header p { display: none; }
             .table-wrapper { max-height: none; overflow: visible; }
-            body { padding: 0; }
+            .container { padding: 0; box-shadow: none; border: none; }
+            body { padding: 0; background: #fff; }
         }
     </style>
 </head>
@@ -143,7 +169,7 @@
 <div class="container">
     <div class="header">
         <h1>أكاديمية القحمة الرياضية</h1>
-        <p>سجل بيانات ورسوم اللاعبين (100 لاعب)</p>
+        <p>🏆 سجل بيانات ورسوم اللاعبين (كشف 100 اسم)</p>
     </div>
 
     <div class="table-wrapper">
@@ -165,9 +191,11 @@
     </div>
 
     <div class="controls">
-        <button id="saveBtn" onclick="saveData()">💾 حفظ البيانات</button>
-        <button id="exportBtn" onclick="exportToExcel()">📊 تصدير إلى Excel</button>
-        <p class="status-msg">* يتم حفظ البيانات تلقائياً في هذا المتصفح لضمان عدم ضياعها.</p>
+        <div class="buttons">
+            <button id="saveBtn" onclick="saveData()">💾 حفظ البيانات</button>
+            <button id="exportBtn" onclick="exportToExcel()">📊 تصدير إلى Excel</button>
+        </div>
+        <p class="status-msg">* تم تحسين التصميم ليكون أفضل شكلاً وسرعةً للمدرب.</p>
     </div>
 </div>
 
@@ -182,7 +210,7 @@
         for (let i = 1; i <= 100; i++) {
             rowsHtml += `
                 <tr>
-                    <td>${i}</td>
+                    <td style="font-weight:bold; color:var(--primary-blue);">${i}</td>
                     <td><input type="text" placeholder="الاسم"></td>
                     <td><input type="text" placeholder="2026/04/02"></td>
                     <td><input type="text" placeholder="شهري"></td>
@@ -242,9 +270,9 @@
             <head>
                 <meta charset="utf-8">
                 <style>
-                    table { direction: rtl; border: 1px solid #ccc; }
-                    th { background-color: #002d5a; color: #ffffff; }
-                    td { border: 1px solid #eee; text-align: center; }
+                    table { direction: rtl; border: 1px solid #ccc; font-family: Cairo, Arial; }
+                    th { background-color: #003366; color: #ffffff; padding: 10px; }
+                    td { border: 1px solid #eee; text-align: center; padding: 5px; }
                 </style>
             </head>
             <body>
@@ -261,8 +289,4 @@
 </script>
 
 </body>
-</html>
-    
-  </body>
-  
 </html>
