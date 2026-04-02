@@ -3,165 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أكاديمية القحمة الرياضية - سجل المشتركين</title>
-    
+    <title>أكاديمية القحمة الرياضية - سجل مريح</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    
     <style>
-        /* --- قسم التصميم (CSS) --- */
         :root {
-            --primary-blue: #003366;    /* أزرق ملكي غامق جداً (لون الطقم) */
-            --accent-blue: #0056b3;     /* أزرق رياضي متوسط */
-            --bg-light: #f0f8ff;      /* خلفية أبيض مائل للأزرق الفاتح */
-            --text-dark: #333333;       /* لون نص داكن مريح */
-            --white: #ffffff;          /* أبيض صافي */
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* ظل خفيف */
+            --primary-blue: #003366;
+            --accent-blue: #0056b3;
+            --bg-light: #f4f9ff;
+            --white: #ffffff;
         }
 
         body {
-            font-family: 'Cairo', sans-serif; /* استخدام خط القاهرة الرياضي */
+            font-family: 'Cairo', sans-serif;
             background-color: var(--bg-light);
             margin: 0;
-            padding: 20px;
-            color: var(--text-dark);
+            padding: 10px; /* تقليل الحواف الخارجية لزيادة مساحة الجدول */
         }
 
-        /* حاوية الموقع الرئيسية بصفر - تحسين الظل */
         .container {
-            max-width: 1250px;
+            max-width: 1350px; /* توسيع الحاوية لتأخذ مساحة الشاشة */
             margin: auto;
             background: var(--white);
-            padding: 30px;
-            border-radius: 20px; /* زوايا دائرية أكثر */
-            box-shadow: var(--shadow);
-            border-top: 10px solid var(--primary-blue); /* شريط علوي بلون الفريق */
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            border-top: 10px solid var(--primary-blue);
         }
 
-        /* الهيدر - تحسين المسافات والشكل */
-        .header {
-            text-align: center;
-            color: var(--primary-blue);
-            margin-bottom: 35px;
-        }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h1 { color: var(--primary-blue); margin: 0; font-size: 28px; }
 
-        .header h1 { 
-            font-size: 36px; 
-            font-weight: 700;
-            margin: 0 0 10px 0; 
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1); /* ظل خفيف للنص */
-        }
-        .header p { 
-            font-size: 20px; 
-            margin: 0; 
-            opacity: 0.8; 
-            background: rgba(0, 51, 102, 0.05); /* خلفية خفيفة للفقرة */
-            padding: 8px 15px;
-            border-radius: 20px;
-            display: inline-block;
-        }
-
-        /* تحسين شكل الجدول - جعل الصفوف تظهر بشكل أفضل */
+        /* أهم جزء: تحسين منطقة الجدول */
         .table-wrapper {
-            max-height: 650px;
+            max-height: 70vh; /* جعل الارتفاع 70% من طول الشاشة */
             overflow-y: auto;
-            border: 1px solid rgba(0, 51, 102, 0.1);
-            border-radius: 12px;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
+            border: 2px solid #eee;
+            border-radius: 10px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 900px; /* يمنع الجدول من الانضغاط في الشاشات الصغيرة */
         }
 
+        /* تثبيت العناوين فوق */
         thead th {
             position: sticky;
             top: 0;
             background-color: var(--primary-blue);
-            color: var(--white);
-            padding: 18px 15px; /* مسافة داخلية أكبر */
-            z-index: 10;
-            font-weight: 700;
-            font-size: 15px;
-            border: 1px solid rgba(0, 51, 102, 0.2);
-            text-transform: uppercase; /* جعل العناوين قوية */
+            color: white;
+            padding: 15px 10px;
+            z-index: 100;
+            font-size: 16px;
+            border: 1px solid #00264d;
         }
 
         td {
-            padding: 5px; /* مسافة أصغر داخل الصف لتقليل الطول */
             border: 1px solid #eee;
-            text-align: center;
-            font-size: 14px;
+            padding: 0; /* إلغاء الحشو للسماح للـ input بأخذ المساحة كاملة */
         }
 
-        tr:nth-child(even) { background-color: rgba(240, 248, 255, 0.5); }
-        tr:hover { background-color: rgba(0, 86, 179, 0.05); } /* تأثير حركي عند المرور */
-
-        /* تحسين شكل خانات الإدخال - جعلها نظيفة وأنيقة */
+        /* تحسين شكل المربعات (الخانات) */
         input {
-            width: 95%;
-            border: 1px solid rgba(0, 0, 0, 0.05); /* ظل خفيف جداً */
-            padding: 10px;
+            width: 100%;
+            height: 45px; /* تكبير ارتفاع الخانة لراحة اليد والعين */
+            border: none;
+            padding: 0 10px;
             text-align: center;
-            font-size: 14px;
-            border-radius: 5px;
-            transition: 0.3s;
+            font-size: 15px;
+            font-family: 'Cairo', sans-serif;
             background-color: transparent;
+            box-sizing: border-box;
+            transition: 0.2s;
         }
 
+        /* تلوين الخانة عند الضغط عليها */
         input:focus {
             outline: none;
-            border-color: var(--accent-blue);
-            background: var(--white);
-            box-shadow: 0 0 8px rgba(0, 86, 179, 0.1);
+            background-color: #fffde7; /* لون أصفر خفيف جداً للتنبيه */
+            border-bottom: 3px solid var(--accent-blue);
         }
 
-        /* تحسين منطقة الأزرار - جعلها مرتبة */
+        /* تلوين الصف بالكامل عند المرور عليه */
+        tr:hover { background-color: #f1f7ff; }
+
         .controls {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid #f0f0f0;
+            margin-top: 20px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: space-between; /* الأزرار على اليسار والرسالة على اليمين */
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 10px;
         }
 
-        .buttons {
-            display: flex;
-            gap: 15px;
-        }
+        .btns { display: flex; gap: 10px; }
 
         button {
-            padding: 12px 30px;
+            padding: 12px 25px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 16px;
+            font-family: 'Cairo';
+            color: white;
             transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
         }
 
-        #saveBtn { background-color: #28a745; color: var(--white); }
-        #saveBtn:hover { background-color: #218838; transform: translateY(-2px); }
+        #saveBtn { background-color: #28a745; }
+        #exportBtn { background-color: var(--primary-blue); }
+        button:hover { opacity: 0.9; transform: translateY(-2px); }
 
-        #exportBtn { background-color: var(--primary-blue); color: var(--white); }
-        #exportBtn:hover { background-color: var(--accent-blue); transform: translateY(-2px); }
+        .hint { color: #666; font-size: 13px; }
 
-        .status-msg { font-size: 13px; color: #777; font-style: italic; }
-
-        /* ستايل مخصص للطباعة */
-        @media print {
-            .controls, .header p { display: none; }
-            .table-wrapper { max-height: none; overflow: visible; }
-            .container { padding: 0; box-shadow: none; border: none; }
-            body { padding: 0; background: #fff; }
-        }
     </style>
 </head>
 <body>
@@ -169,14 +123,14 @@
 <div class="container">
     <div class="header">
         <h1>أكاديمية القحمة الرياضية</h1>
-        <p>🏆 سجل بيانات ورسوم اللاعبين (كشف 100 اسم)</p>
+        <p>سجل بيانات المشتركين (كشف 100 لاعب)</p>
     </div>
 
     <div class="table-wrapper">
         <table id="playersTable">
             <thead>
                 <tr>
-                    <th style="width: 50px;">م</th>
+                    <th style="width: 40px;">م</th>
                     <th>اسم اللاعب</th>
                     <th>تاريخ التسليم</th>
                     <th>الرسوم</th>
@@ -185,101 +139,73 @@
                     <th>رقم الجوال</th>
                 </tr>
             </thead>
-            <tbody id="tableBody">
-                </tbody>
+            <tbody id="tableBody"></tbody>
         </table>
     </div>
 
     <div class="controls">
-        <div class="buttons">
+        <div class="btns">
             <button id="saveBtn" onclick="saveData()">💾 حفظ البيانات</button>
-            <button id="exportBtn" onclick="exportToExcel()">📊 تصدير إلى Excel</button>
+            <button id="exportBtn" onclick="exportToExcel()">📊 تصدير Excel</button>
         </div>
-        <p class="status-msg">* تم تحسين التصميم ليكون أفضل شكلاً وسرعةً للمدرب.</p>
+        <p class="hint">* العناوين ثابتة بالأعلى لسهولة التعبئة. اضغط حفظ بعد كل تعديل.</p>
     </div>
 </div>
 
 <script>
-    /* --- قسم البرمجة (JavaScript) --- */
-
     const tableBody = document.getElementById('tableBody');
 
-    // 1. توليد 100 صف فارغ عند فتح الصفحة
+    // توليد 100 صف مريح
     function generateRows() {
         let rowsHtml = '';
         for (let i = 1; i <= 100; i++) {
             rowsHtml += `
                 <tr>
-                    <td style="font-weight:bold; color:var(--primary-blue);">${i}</td>
-                    <td><input type="text" placeholder="الاسم"></td>
-                    <td><input type="text" placeholder="2026/04/02"></td>
-                    <td><input type="text" placeholder="شهري"></td>
-                    <td><input type="text" placeholder="المرحلة"></td>
-                    <td><input type="text" placeholder="ممتاز"></td>
-                    <td><input type="text" placeholder="05xxxxxx"></td>
+                    <td style="background:#f9f9f9; font-weight:bold; text-align:center; color:#003366;">${i}</td>
+                    <td><input type="text" placeholder="..."></td>
+                    <td><input type="text" placeholder="..."></td>
+                    <td><input type="text" placeholder="..."></td>
+                    <td><input type="text" placeholder="..."></td>
+                    <td><input type="text" placeholder="..."></td>
+                    <td><input type="text" placeholder="..."></td>
                 </tr>
             `;
         }
         tableBody.innerHTML = rowsHtml;
     }
 
-    // 2. وظيفة حفظ البيانات في ذاكرة المتصفح (Local Storage)
     function saveData() {
         const rows = document.querySelectorAll('#tableBody tr');
         const allData = [];
-
         rows.forEach(row => {
             const inputs = row.querySelectorAll('input');
             const rowData = Array.from(inputs).map(input => input.value);
-            // نحفظ الصف فقط إذا كان فيه بيانات (تجنب حفظ صفوف فارغة تماماً)
             if (rowData.some(val => val.trim() !== "")) {
                 allData.push(rowData);
             }
         });
-
-        localStorage.setItem('qahmahAcademy_v2', JSON.stringify(allData));
-        alert('✅ تم حفظ البيانات بنجاح! سيتم استعادتها تلقائياً عند فتح الصفحة مرة أخرى.');
+        localStorage.setItem('qahmah_v3_luxury', JSON.stringify(allData));
+        alert('✅ تم الحفظ بنجاح!');
     }
 
-    // 3. استرجاع البيانات تلقائياً عند تحميل الصفحة
     window.onload = function() {
-        generateRows(); // نولد الصفوف أولاً
-        
-        const savedData = JSON.parse(localStorage.getItem('qahmahAcademy_v2'));
-        if (savedData) {
+        generateRows();
+        const saved = JSON.parse(localStorage.getItem('qahmah_v3_luxury'));
+        if (saved) {
             const rows = document.querySelectorAll('#tableBody tr');
-            savedData.forEach((rowData, index) => {
+            saved.forEach((rowData, index) => {
                 if (rows[index]) {
                     const inputs = rows[index].querySelectorAll('input');
-                    rowData.forEach((val, i) => {
-                        if(inputs[i]) inputs[i].value = val;
-                    });
+                    rowData.forEach((val, i) => { if(inputs[i]) inputs[i].value = val; });
                 }
             });
         }
     };
 
-    // 4. وظيفة تصدير الجدول لملف Excel
     function exportToExcel() {
         let table = document.getElementById("playersTable");
         let html = table.outerHTML;
-        
-        // قالب ملف Excel مع دعم اللغة العربية (UTF-8)
-        let template = `
-            <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" lang="ar">
-            <head>
-                <meta charset="utf-8">
-                <style>
-                    table { direction: rtl; border: 1px solid #ccc; font-family: Cairo, Arial; }
-                    th { background-color: #003366; color: #ffffff; padding: 10px; }
-                    td { border: 1px solid #eee; text-align: center; padding: 5px; }
-                </style>
-            </head>
-            <body>
-                ${html}
-            </body>
-            </html>`;
-            
+        let template = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" lang="ar"><head><meta charset="utf-8"><style>table{direction:rtl; border:1px solid #ccc;} th{background:#003366; color:#fff;} td{border:1px solid #eee; text-align:center;}</style></head><body>${html}</body></html>`;
         let url = 'data:application/vnd.ms-excel;charset=utf-8,' + encodeURIComponent(template);
         let link = document.createElement("a");
         link.href = url;
