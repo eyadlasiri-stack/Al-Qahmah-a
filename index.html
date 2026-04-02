@@ -137,8 +137,8 @@
         const tableBody = document.getElementById('tableBody');
         const saveTag = document.getElementById('save-tag');
         
-        // 🛑 الشرط الأهم: هذا المفتاح هو قبو البيانات، لا تغير اسمه أبداً في التحديثات القادمة 🛑
-        const DB_KEY = 'ALQAHMA_PERMANENT_DB_FINAL'; 
+        // المفتاح الذهبي
+        const DB_KEY = 'ALQAHMA_PERMANENT_DB_FINAL_V2'; 
 
         function init() {
             let rows = '';
@@ -157,7 +157,6 @@
             }
             tableBody.innerHTML = rows;
             
-            // استدعاء البيانات المحفوظة فوراً عند فتح الموقع
             loadData();
             
             setInterval(() => { 
@@ -179,13 +178,14 @@
             clearTimeout(timer);
             timer = setTimeout(() => {
                 const data = [];
-                tableBody.querySelectorAll('tr').forEach(row => {
+                tableBody.querySelectorAll('tr').forEach((row, rowIndex) => {
                     const inputs = Array.from(row.querySelectorAll('input')).map(i => i.value);
-                    // نحفظ الصف فقط إذا كان فيه أي معلومة
-                    if (inputs.some(v => v.trim() !== "")) data.push(inputs);
+                    // حفظ السطر مع رقم السطر الخاص فيه عشان ما يضيع مكانه
+                    if (inputs.some(v => v.trim() !== "")) {
+                        data.push({ id: rowIndex, values: inputs });
+                    }
                 });
                 
-                // هنا يتم الحفظ في ذاكرة الجهاز (التي لا تتأثر بتحديثاتك للكود)
                 localStorage.setItem(DB_KEY, JSON.stringify(data));
                 
                 saveTag.style.opacity = "1";
@@ -198,13 +198,14 @@
             if (savedRaw) {
                 const savedData = JSON.parse(savedRaw);
                 const rows = tableBody.querySelectorAll('tr');
-                savedData.forEach((rowData, index) => {
-                    if (rows[index]) {
-                        const inputs = rows[index].querySelectorAll('input');
-                        rowData.forEach((val, i) => { 
+                savedData.forEach(item => {
+                    // التأكد من استرجاع البيانات للسطر الصحيح بالضبط
+                    if (item && item.id !== undefined && rows[item.id]) {
+                        const inputs = rows[item.id].querySelectorAll('input');
+                        item.values.forEach((val, i) => { 
                             if(inputs[i]) {
                                 inputs[i].value = val;
-                                checkInput(inputs[i]); // لتفعيل اللون الأخضر للبيانات القديمة
+                                checkInput(inputs[i]); 
                             }
                         });
                     }
@@ -219,16 +220,20 @@
                 return;
             }
 
-            const saved = JSON.parse(savedRaw);
+            const savedData = JSON.parse(savedRaw);
             let message = "📦 *نسخة احتياطية مشفرة - أكاديمية القحمة* 📦\n\n";
-            saved.forEach((row, index) => {
-                let name = row[0] || '---';
-                let date = row[1] || '---';
-                let fees = row[2] || '---';
-                let level = row[3] || '---';
-                let health = row[4] || '---';
-                let phone = row[5] || '---';
-                message += `[${index + 1}] ${name} | ${date} | ${fees} | ${level} | ${health} | ${phone}\n`;
+            
+            savedData.forEach(item => {
+                let rowNum = item.id + 1; // رقم السطر
+                let vals = item.values;
+                let name = vals[0] || '---';
+                let date = vals[1] || '---';
+                let fees = vals[2] || '---';
+                let level = vals[3] || '---';
+                let health = vals[4] || '---';
+                let phone = vals[5] || '---';
+                
+                message += `[رقم ${rowNum}] ${name} | ${date} | ${fees} | ${level} | ${health} | ${phone}\n`;
             });
 
             const encodedMessage = encodeURIComponent(message);
