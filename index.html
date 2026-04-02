@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أكاديمية القحمة الرياضية - سجل المشتركين</title>
+    
+    <style>
+        /* --- قسم التصميم (CSS) --- */
+        :root {
+            --main-blue: #002d5a; /* أزرق ملكي غامق */
+            --accent-blue: #0056b3; /* أزرق متوسط */
+            --bg-light: #f0f7ff; /* خلفية مائلة للأزرق */
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-light);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: var(--white);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-top: 10px solid var(--main-blue);
+        }
+
+        .header {
+            text-align: center;
+            color: var(--main-blue);
+            margin-bottom: 25px;
+        }
+
+        .header h1 { font-size: 32px; margin: 0 0 10px 0; }
+        .header p { font-size: 18px; margin: 0; opacity: 0.8; }
+
+        .table-wrapper {
+            max-height: 650px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            position: sticky;
+            top: 0;
+            background-color: var(--main-blue);
+            color: white;
+            padding: 15px;
+            z-index: 10;
+            border: 1px solid #001f3f;
+        }
+
+        td {
+            padding: 5px;
+            border: 1px solid #eee;
+            text-align: center;
+        }
+
+        tr:nth-child(even) { background-color: #f8faff; }
+        tr:hover { background-color: #eef5ff; }
+
+        input {
+            width: 90%;
+            border: 1px solid transparent;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            background: #fff;
+            box-shadow: 0 0 5px rgba(0,86,179,0.2);
+        }
+
+        .controls {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 2px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #saveBtn { background-color: #28a745; color: white; }
+        #saveBtn:hover { background-color: #218838; transform: translateY(-2px); }
+
+        #exportBtn { background-color: var(--main-blue); color: white; }
+        #exportBtn:hover { background-color: var(--accent-blue); transform: translateY(-2px); }
+
+        .status-msg { font-size: 13px; color: #666; font-style: italic; }
+
+        /* ستايل مخصص للطباعة */
+        @media print {
+            .controls { display: none; }
+            .table-wrapper { max-height: none; overflow: visible; }
+            body { padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>أكاديمية القحمة الرياضية</h1>
+        <p>سجل بيانات ورسوم اللاعبين (100 لاعب)</p>
+    </div>
+
+    <div class="table-wrapper">
+        <table id="playersTable">
+            <thead>
+                <tr>
+                    <th style="width: 50px;">م</th>
+                    <th>اسم اللاعب</th>
+                    <th>تاريخ التسليم</th>
+                    <th>الرسوم</th>
+                    <th>المرحلة الدراسية</th>
+                    <th>الحالة الصحية</th>
+                    <th>رقم الجوال</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                </tbody>
+        </table>
+    </div>
+
+    <div class="controls">
+        <button id="saveBtn" onclick="saveData()">💾 حفظ البيانات</button>
+        <button id="exportBtn" onclick="exportToExcel()">📊 تصدير إلى Excel</button>
+        <p class="status-msg">* يتم حفظ البيانات تلقائياً في هذا المتصفح لضمان عدم ضياعها.</p>
+    </div>
+</div>
+
+<script>
+    /* --- قسم البرمجة (JavaScript) --- */
+
+    const tableBody = document.getElementById('tableBody');
+
+    // 1. توليد 100 صف فارغ عند فتح الصفحة
+    function generateRows() {
+        let rowsHtml = '';
+        for (let i = 1; i <= 100; i++) {
+            rowsHtml += `
+                <tr>
+                    <td>${i}</td>
+                    <td><input type="text" placeholder="الاسم"></td>
+                    <td><input type="text" placeholder="2026/04/02"></td>
+                    <td><input type="text" placeholder="شهري"></td>
+                    <td><input type="text" placeholder="المرحلة"></td>
+                    <td><input type="text" placeholder="ممتاز"></td>
+                    <td><input type="text" placeholder="05xxxxxx"></td>
+                </tr>
+            `;
+        }
+        tableBody.innerHTML = rowsHtml;
+    }
+
+    // 2. وظيفة حفظ البيانات في ذاكرة المتصفح (Local Storage)
+    function saveData() {
+        const rows = document.querySelectorAll('#tableBody tr');
+        const allData = [];
+
+        rows.forEach(row => {
+            const inputs = row.querySelectorAll('input');
+            const rowData = Array.from(inputs).map(input => input.value);
+            // نحفظ الصف فقط إذا كان فيه بيانات (تجنب حفظ صفوف فارغة تماماً)
+            if (rowData.some(val => val.trim() !== "")) {
+                allData.push(rowData);
+            }
+        });
+
+        localStorage.setItem('qahmahAcademy_v2', JSON.stringify(allData));
+        alert('✅ تم حفظ البيانات بنجاح! سيتم استعادتها تلقائياً عند فتح الصفحة مرة أخرى.');
+    }
+
+    // 3. استرجاع البيانات تلقائياً عند تحميل الصفحة
+    window.onload = function() {
+        generateRows(); // نولد الصفوف أولاً
+        
+        const savedData = JSON.parse(localStorage.getItem('qahmahAcademy_v2'));
+        if (savedData) {
+            const rows = document.querySelectorAll('#tableBody tr');
+            savedData.forEach((rowData, index) => {
+                if (rows[index]) {
+                    const inputs = rows[index].querySelectorAll('input');
+                    rowData.forEach((val, i) => {
+                        if(inputs[i]) inputs[i].value = val;
+                    });
+                }
+            });
+        }
+    };
+
+    // 4. وظيفة تصدير الجدول لملف Excel
+    function exportToExcel() {
+        let table = document.getElementById("playersTable");
+        let html = table.outerHTML;
+        
+        // قالب ملف Excel مع دعم اللغة العربية (UTF-8)
+        let template = `
+            <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" lang="ar">
+            <head>
+                <meta charset="utf-8">
+                <style>
+                    table { direction: rtl; border: 1px solid #ccc; }
+                    th { background-color: #002d5a; color: #ffffff; }
+                    td { border: 1px solid #eee; text-align: center; }
+                </style>
+            </head>
+            <body>
+                ${html}
+            </body>
+            </html>`;
+            
+        let url = 'data:application/vnd.ms-excel;charset=utf-8,' + encodeURIComponent(template);
+        let link = document.createElement("a");
+        link.href = url;
+        link.download = "كشف_اكاديمية_القحمة.xls";
+        link.click();
+    }
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>
