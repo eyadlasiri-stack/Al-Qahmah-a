@@ -2,178 +2,155 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>أكاديمية القحمة الرياضية | النظام الإداري</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-blue: #002d5a;
             --accent-gold: #ffd700;
+            --border-light: #e2e8f0;
             --white: #ffffff;
-            --header-height: 180px; /* تحديد ارتفاع ثابت للهيدر لمنع التداخل */
         }
 
-        /* منع الصفحة كاملة من التحرك وتثبيت العناصر */
+        /* تثبيت الهيكل ومنع الحركة الجانبية */
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
             overflow: hidden; 
             font-family: 'Cairo', sans-serif;
-            background-color: #f1f5f9;
+            background-color: #ffffff;
         }
 
-        body {
-            display: flex;
-            flex-direction: column;
-        }
+        body { display: flex; flex-direction: column; }
 
-        /* --- الهيدر الثابت (الطبقة العلوية) --- */
-        .main-header {
+        /* الهيدر العلوي الثابت */
+        .header-fixed {
             background: linear-gradient(180deg, var(--primary-blue) 0%, #001a35 100%);
             color: white;
             text-align: center;
-            padding: 15px 10px;
-            flex-shrink: 0; /* يمنع الهيدر من الانضغاط */
-            border-bottom: 4px solid var(--accent-gold);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            padding: 10px;
+            flex-shrink: 0;
             z-index: 2000;
+            border-bottom: 3px solid var(--accent-gold);
         }
 
-        .main-header img {
-            width: 70px;
-            height: auto;
-            margin-bottom: 5px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-        }
+        .header-fixed img { width: 65px; height: auto; margin-bottom: 5px; }
+        .header-fixed h1 { font-size: 20px; margin: 0; font-weight: 900; }
 
-        .main-header h1 {
-            font-size: 22px;
-            margin: 0;
-            font-weight: 900;
-        }
-
-        /* شريط المعلومات */
-        .info-bar {
+        .info-strip {
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-top: 8px;
-            font-size: 12px;
-            flex-wrap: wrap;
+            margin-top: 5px;
+            font-size: 11px;
+            opacity: 0.9;
         }
 
-        .info-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 3px 10px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
+        .location { color: var(--accent-gold); font-weight: bold; }
 
-        .location-text { color: var(--accent-gold); font-weight: bold; }
-
-        #save-status {
+        #save-notify {
             font-size: 11px;
             color: #4ade80;
             height: 14px;
-            margin-top: 4px;
-            font-weight: bold;
+            margin-top: 3px;
             opacity: 0;
             transition: 0.3s;
         }
 
-        /* --- منطقة الجدول (الطبقة المتحركة) --- */
-        .content-area {
+        /* منطقة المحتوى المتحركة */
+        .scroll-area {
             flex-grow: 1;
-            overflow: auto; /* يسمح بالتحرك هنا فقط */
-            position: relative;
+            overflow-y: auto; /* تحريك عمودي فقط */
+            overflow-x: hidden; /* منع التحريك الجانبي نهائياً */
+            width: 100%;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: fixed;
-            min-width: 900px;
+            table-layout: fixed; /* توزيع الأعمدة بدقة داخل العرض المتاح */
         }
 
-        /* تثبيت العناوين داخل منطقة الجدول */
+        /* العناوين ثابتة تحت الهيدر مباشرة */
         thead th {
             position: sticky;
-            top: 0; /* تثبيت في قمة منطقة المحتوى */
-            background-color: #ffffff;
+            top: 0;
+            background-color: #f8fafc;
             color: var(--primary-blue);
-            padding: 15px 5px;
-            font-size: 14px;
-            font-weight: 900;
-            border-bottom: 2px solid #ddd;
+            padding: 12px 2px;
+            font-size: 13px;
+            font-weight: 700;
+            border-bottom: 2px solid var(--border-light);
             z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
+        /* تصميم المربعات الخفيف والجميل */
         td {
-            border-bottom: 1px solid #e2e8f0;
+            border: 1px solid #f1f5f9; /* حدود خفيفة جداً */
             padding: 0;
             background: white;
         }
 
         input {
             width: 100%;
-            height: 48px;
+            height: 45px;
             border: none;
-            padding: 0 8px;
+            padding: 0 5px;
             text-align: center;
             font-size: 14px;
             font-family: 'Cairo';
             background: transparent;
             outline: none;
+            color: #334155;
+            transition: 0.2s;
         }
 
         input:focus {
-            background: #fffdf0;
-            border-bottom: 3px solid var(--primary-blue);
+            background-color: #fffdf5;
+            border-bottom: 2px solid var(--primary-blue);
         }
 
-        .num-col {
-            background: #f8fafc;
-            width: 40px;
+        .m-num {
+            background: #fdfdfd;
+            width: 35px;
             font-weight: bold;
-            color: var(--primary-blue);
-            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
         }
 
-        tr:hover td { background-color: #f8fbff; }
+        tr:hover td { background-color: #fcfdfe; }
 
-        /* تعديلات الجوال */
+        /* تعديلات الجوال لضمان عدم وجود "لف يمين يسار" */
         @media (max-width: 600px) {
-            .main-header img { width: 55px; }
-            .main-header h1 { font-size: 18px; }
-            thead th { font-size: 12px; padding: 10px 2px; }
+            thead th { font-size: 10px; padding: 8px 1px; }
+            input { font-size: 12px; height: 40px; }
+            .m-num { width: 25px; }
         }
     </style>
 </head>
 <body>
 
-    <header class="main-header">
+    <header class="header-fixed">
         <img src="https://i.ibb.co/QF1mKFpn/IMG-8418.png" alt="Logo">
         <h1>أكاديمية القحمة الرياضية</h1>
         
-        <div class="info-bar">
-            <div class="info-item">📍 <span class="location-text">ملعب الخيرية بالقحمة</span></div>
-            <div class="info-item">⏰ <span id="clock">00:00:00</span></div>
-            <div class="info-item">☀️ <span>28°C صافي</span></div>
+        <div class="info-strip">
+            <div>📍 <span class="location">ملعب الخيرية بالقحمة</span></div>
+            <div>⏰ <span id="live-time">00:00:00</span></div>
+            <div>☀️ <span>صافي 28°C</span></div>
         </div>
 
-        <div id="save-status">✓ تم الحفظ تلقائياً</div>
+        <div id="save-notify">✓ تم الحفظ</div>
     </header>
 
-    <main class="content-area">
+    <main class="scroll-area">
         <table id="playersTable">
             <thead>
                 <tr>
-                    <th style="width: 40px;">م</th>
-                    <th>اسم اللاعب</th>
+                    <th style="width: 35px;">م</th>
+                    <th>الاسم</th>
                     <th>التاريخ</th>
                     <th>الرسوم</th>
                     <th>المرحلة</th>
@@ -181,62 +158,61 @@
                     <th>الجوال</th>
                 </tr>
             </thead>
-            <tbody id="tableBody">
+            <tbody id="dataBody">
                 </tbody>
         </table>
     </main>
 
     <script>
-        const tableBody = document.getElementById('tableBody');
-        const saveStatus = document.getElementById('save-status');
-        const STORAGE_KEY = 'ALQAHMA_FINAL_ULTRA_V1';
+        const dataBody = document.getElementById('dataBody');
+        const saveNotify = document.getElementById('save-notify');
+        const DB_KEY = 'ALQAHMA_ULTRA_STABLE_V1';
 
-        // توليد الصفوف
         function init() {
-            let html = '';
+            let rows = '';
             for (let i = 1; i <= 100; i++) {
-                html += `
+                rows += `
                     <tr>
-                        <td class="num-col">${i}</td>
-                        <td><input type="text" oninput="save()" placeholder="..."></td>
-                        <td><input type="text" oninput="save()" placeholder="..."></td>
-                        <td><input type="text" oninput="save()" placeholder="..."></td>
-                        <td><input type="text" oninput="save()" placeholder="..."></td>
-                        <td><input type="text" oninput="save()" placeholder="..."></td>
-                        <td><input type="text" oninput="save()" placeholder="..."></td>
+                        <td class="m-num">${i}</td>
+                        <td><input type="text" oninput="autoSave()"></td>
+                        <td><input type="text" oninput="autoSave()"></td>
+                        <td><input type="text" oninput="autoSave()"></td>
+                        <td><input type="text" oninput="autoSave()"></td>
+                        <td><input type="text" oninput="autoSave()"></td>
+                        <td><input type="text" oninput="autoSave()"></td>
                     </tr>
                 `;
             }
-            tableBody.innerHTML = html;
-            load();
-            startClock();
+            dataBody.innerHTML = rows;
+            loadData();
+            updateClock();
         }
 
-        function startClock() {
+        function updateClock() {
             setInterval(() => {
-                document.getElementById('clock').innerText = new Date().toLocaleTimeString('ar-SA');
+                document.getElementById('live-time').innerText = new Date().toLocaleTimeString('ar-SA');
             }, 1000);
         }
 
-        let timer;
-        function save() {
-            clearTimeout(timer);
-            timer = setTimeout(() => {
+        let debounce;
+        function autoSave() {
+            clearTimeout(debounce);
+            debounce = setTimeout(() => {
                 const data = [];
-                tableBody.querySelectorAll('tr').forEach(row => {
+                dataBody.querySelectorAll('tr').forEach(row => {
                     const vals = Array.from(row.querySelectorAll('input')).map(i => i.value);
                     if (vals.some(v => v.trim() !== "")) data.push(vals);
                 });
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-                saveStatus.style.opacity = "1";
-                setTimeout(() => { saveStatus.style.opacity = "0"; }, 1000);
+                localStorage.setItem(DB_KEY, JSON.stringify(data));
+                saveNotify.style.opacity = "1";
+                setTimeout(() => saveNotify.style.opacity = "0", 800);
             }, 500);
         }
 
-        function load() {
-            const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        function loadData() {
+            const saved = JSON.parse(localStorage.getItem(DB_KEY));
             if (saved) {
-                const rows = tableBody.querySelectorAll('tr');
+                const rows = dataBody.querySelectorAll('tr');
                 saved.forEach((rowData, index) => {
                     if (rows[index]) {
                         const inputs = rows[index].querySelectorAll('input');
