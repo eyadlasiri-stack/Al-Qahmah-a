@@ -2,217 +2,225 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>أكاديمية القحمة الرياضية | النظام الإداري</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أكاديمية القحمة الرياضية | النظام المطور</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-blue: #002d5a;
             --accent-gold: #ffd700;
-            --border-light: #e2e8f0;
+            --border-color: #e2e8f0;
             --white: #ffffff;
         }
 
-        /* تثبيت الهيكل ومنع الحركة الجانبية */
+        /* تثبيت الهيكل العام */
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
             overflow: hidden; 
             font-family: 'Cairo', sans-serif;
-            background-color: #ffffff;
+            background-color: #f8fafc;
         }
 
         body { display: flex; flex-direction: column; }
 
         /* الهيدر العلوي الثابت */
-        .header-fixed {
+        .main-header {
             background: linear-gradient(180deg, var(--primary-blue) 0%, #001a35 100%);
             color: white;
             text-align: center;
-            padding: 10px;
+            padding: 15px 10px;
             flex-shrink: 0;
             z-index: 2000;
-            border-bottom: 3px solid var(--accent-gold);
+            border-bottom: 4px solid var(--accent-gold);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
-        .header-fixed img { width: 65px; height: auto; margin-bottom: 5px; }
-        .header-fixed h1 { font-size: 20px; margin: 0; font-weight: 900; }
+        .main-header img { width: 80px; height: auto; margin-bottom: 8px; }
+        .main-header h1 { font-size: 24px; margin: 0; font-weight: 900; }
 
-        .info-strip {
+        .info-row {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-top: 5px;
-            font-size: 11px;
-            opacity: 0.9;
+            gap: 20px;
+            margin-top: 8px;
+            font-size: 13px;
         }
 
-        .location { color: var(--accent-gold); font-weight: bold; }
+        .loc { color: var(--accent-gold); font-weight: bold; }
 
-        #save-notify {
-            font-size: 11px;
+        #save-tag {
+            font-size: 12px;
             color: #4ade80;
-            height: 14px;
-            margin-top: 3px;
+            height: 15px;
+            margin-top: 5px;
+            font-weight: bold;
             opacity: 0;
             transition: 0.3s;
         }
 
-        /* منطقة المحتوى المتحركة */
-        .scroll-area {
+        /* منطقة المحتوى - تسمح بالتحرك يمين/يسار وفوق/تحت */
+        .scroll-container {
             flex-grow: 1;
-            overflow-y: auto; /* تحريك عمودي فقط */
-            overflow-x: hidden; /* منع التحريك الجانبي نهائياً */
+            overflow: auto; /* يسمح باللف في كل الاتجاهات */
             width: 100%;
         }
 
         table {
-            width: 100%;
             border-collapse: collapse;
-            table-layout: fixed; /* توزيع الأعمدة بدقة داخل العرض المتاح */
+            min-width: 1100px; /* جعل الجدول عريض ليسمح باللف الجانبي مريحاً */
+            background: white;
         }
 
-        /* العناوين ثابتة تحت الهيدر مباشرة */
+        /* تثبيت العناوين في قمة منطقة التمرير */
         thead th {
             position: sticky;
             top: 0;
-            background-color: #f8fafc;
+            background-color: #ffffff;
             color: var(--primary-blue);
-            padding: 12px 2px;
-            font-size: 13px;
-            font-weight: 700;
-            border-bottom: 2px solid var(--border-light);
+            padding: 15px 10px;
+            font-size: 15px;
+            font-weight: 900;
+            border-bottom: 3px solid var(--border-color);
             z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        /* تصميم المربعات الخفيف والجميل */
+        /* تصميم المربعات (كبيرة وشرحة) */
         td {
-            border: 1px solid #f1f5f9; /* حدود خفيفة جداً */
+            border: 1px solid #edf2f7;
             padding: 0;
-            background: white;
         }
 
         input {
             width: 100%;
-            height: 45px;
+            height: 55px; /* ارتفاع كبير ومريح للكتابة */
             border: none;
-            padding: 0 5px;
+            padding: 0 15px;
             text-align: center;
-            font-size: 14px;
+            font-size: 16px;
             font-family: 'Cairo';
             background: transparent;
             outline: none;
-            color: #334155;
-            transition: 0.2s;
+            color: #1e293b;
         }
 
         input:focus {
-            background-color: #fffdf5;
-            border-bottom: 2px solid var(--primary-blue);
-        }
-
-        .m-num {
-            background: #fdfdfd;
-            width: 35px;
+            background-color: #fffdf2;
+            border-bottom: 4px solid var(--primary-blue);
             font-weight: bold;
-            color: #94a3b8;
-            font-size: 12px;
         }
 
-        tr:hover td { background-color: #fcfdfe; }
+        .index-cell {
+            background: #f8fafc;
+            width: 50px;
+            font-weight: bold;
+            color: var(--primary-blue);
+            text-align: center;
+            position: sticky;
+            right: 0; /* تثبيت عمود الأرقام جهة اليمين عند اللف الجانبي */
+            z-index: 500;
+            border-left: 2px solid var(--border-color);
+        }
 
-        /* تعديلات الجوال لضمان عدم وجود "لف يمين يسار" */
-        @media (max-width: 600px) {
-            thead th { font-size: 10px; padding: 8px 1px; }
-            input { font-size: 12px; height: 40px; }
-            .m-num { width: 25px; }
+        tr:hover td { background-color: #f1f7ff; }
+
+        @media (max-width: 768px) {
+            .main-header h1 { font-size: 20px; }
+            .main-header img { width: 65px; }
         }
     </style>
 </head>
 <body>
 
-    <header class="header-fixed">
+    <header class="main-header">
         <img src="https://i.ibb.co/QF1mKFpn/IMG-8418.png" alt="Logo">
         <h1>أكاديمية القحمة الرياضية</h1>
         
-        <div class="info-strip">
-            <div>📍 <span class="location">ملعب الخيرية بالقحمة</span></div>
-            <div>⏰ <span id="live-time">00:00:00</span></div>
+        <div class="info-row">
+            <div>📍 <span class="loc">ملعب الخيرية بالقحمة</span></div>
+            <div>⏰ <span id="clock">00:00:00</span></div>
             <div>☀️ <span>صافي 28°C</span></div>
         </div>
 
-        <div id="save-notify">✓ تم الحفظ</div>
+        <div id="save-tag">✓ تم الحفظ تلقائياً</div>
     </header>
 
-    <main class="scroll-area">
-        <table id="playersTable">
+    <main class="scroll-container">
+        <table id="mainTable">
             <thead>
                 <tr>
-                    <th style="width: 35px;">م</th>
-                    <th>الاسم</th>
-                    <th>التاريخ</th>
-                    <th>الرسوم</th>
-                    <th>المرحلة</th>
-                    <th>الحالة</th>
-                    <th>الجوال</th>
+                    <th style="width: 50px; right: 0; position: sticky; z-index: 1100; background: #fff;">م</th>
+                    <th>اسم اللاعب الكامل</th>
+                    <th>تاريخ التسليم</th>
+                    <th>نوع الرسوم</th>
+                    <th>المرحلة الدراسية</th>
+                    <th>الحالة الصحية</th>
+                    <th>رقم جوال ولي الأمر</th>
                 </tr>
             </thead>
-            <tbody id="dataBody">
+            <tbody id="tableBody">
                 </tbody>
         </table>
     </main>
 
     <script>
-        const dataBody = document.getElementById('dataBody');
-        const saveNotify = document.getElementById('save-notify');
-        const DB_KEY = 'ALQAHMA_ULTRA_STABLE_V1';
+        const tableBody = document.getElementById('tableBody');
+        const saveTag = document.getElementById('save-tag');
+        const DB_KEY = 'ALQAHMA_ULTRA_V2_EXPANDED';
 
         function init() {
             let rows = '';
             for (let i = 1; i <= 100; i++) {
                 rows += `
                     <tr>
-                        <td class="m-num">${i}</td>
-                        <td><input type="text" oninput="autoSave()"></td>
-                        <td><input type="text" oninput="autoSave()"></td>
-                        <td><input type="text" oninput="autoSave()"></td>
-                        <td><input type="text" oninput="autoSave()"></td>
-                        <td><input type="text" oninput="autoSave()"></td>
-                        <td><input type="text" oninput="autoSave()"></td>
+                        <td class="index-cell">${i}</td>
+                        <td><input type="text" placeholder="الاسم..."></td>
+                        <td><input type="text" placeholder="التاريخ..."></td>
+                        <td><input type="text" placeholder="الرسوم..."></td>
+                        <td><input type="text" placeholder="المرحلة..."></td>
+                        <td><input type="text" placeholder="الحالة..."></td>
+                        <td><input type="text" placeholder="الجوال..."></td>
                     </tr>
                 `;
             }
-            dataBody.innerHTML = rows;
+            tableBody.innerHTML = rows;
+            
+            // إضافة حدث الحفظ لكل مدخل
+            tableBody.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', autoSave);
+            });
+
             loadData();
-            updateClock();
+            startClock();
         }
 
-        function updateClock() {
+        function startClock() {
             setInterval(() => {
-                document.getElementById('live-time').innerText = new Date().toLocaleTimeString('ar-SA');
+                document.getElementById('clock').innerText = new Date().toLocaleTimeString('ar-SA');
             }, 1000);
         }
 
-        let debounce;
+        let timer;
         function autoSave() {
-            clearTimeout(debounce);
-            debounce = setTimeout(() => {
+            clearTimeout(timer);
+            timer = setTimeout(() => {
                 const data = [];
-                dataBody.querySelectorAll('tr').forEach(row => {
-                    const vals = Array.from(row.querySelectorAll('input')).map(i => i.value);
-                    if (vals.some(v => v.trim() !== "")) data.push(vals);
+                tableBody.querySelectorAll('tr').forEach(row => {
+                    const inputs = Array.from(row.querySelectorAll('input')).map(i => i.value);
+                    if (inputs.some(v => v.trim() !== "")) data.push(inputs);
                 });
                 localStorage.setItem(DB_KEY, JSON.stringify(data));
-                saveNotify.style.opacity = "1";
-                setTimeout(() => saveNotify.style.opacity = "0", 800);
+                saveTag.style.opacity = "1";
+                setTimeout(() => saveTag.style.opacity = "0", 1000);
             }, 500);
         }
 
         function loadData() {
             const saved = JSON.parse(localStorage.getItem(DB_KEY));
             if (saved) {
-                const rows = dataBody.querySelectorAll('tr');
+                const rows = tableBody.querySelectorAll('tr');
                 saved.forEach((rowData, index) => {
                     if (rows[index]) {
                         const inputs = rows[index].querySelectorAll('input');
