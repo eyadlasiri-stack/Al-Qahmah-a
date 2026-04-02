@@ -3,231 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أكاديمية القحمة الرياضية | السجل الرسمي</title>
+    <title>سجل أكاديمية القحمة الرياضية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-blue: #002d5a; /* أزرق ملكي غامق */
-            --secondary-blue: #0056b3; /* أزرق رياضي */
-            --accent-gold: #ffd700; /* لمسة ذهبية */
-            --light-bg: #f4f7fa;
+            --primary-blue: #002d5a;
+            --secondary-blue: #0056b3;
+            --accent-gold: #ffd700;
             --white: #ffffff;
+            --bg-body: #e9eff5;
         }
 
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: var(--light-bg);
+            background-color: var(--bg-body);
             margin: 0;
             padding: 0;
-            color: #333;
+            overflow-x: hidden;
         }
 
-        /* --- الهيدر المنفصل والمرتب --- */
-        .hero-header {
-            background: linear-gradient(180deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+        /* هيدر نحيف ومدمج لإعطاء مساحة أكبر للجدول */
+        .top-bar {
+            background: var(--primary-blue);
             color: white;
-            padding: 30px 20px;
-            text-align: center;
-            border-bottom: 4px solid var(--accent-gold);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            margin-bottom: 20px;
+            padding: 10px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid var(--accent-gold);
+            position: sticky;
+            top: 0;
+            z-index: 1001;
         }
 
-        .logo-img {
-            width: 140px; /* حجم الشعار المناسب */
-            height: auto;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); /* ظل للشعار */
+        .brand { display: flex; align-items: center; gap: 15px; }
+        .brand img { width: 60px; height: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+        .brand h1 { font-size: 20px; margin: 0; font-weight: 900; }
+
+        #save-status { font-size: 13px; color: #4ade80; font-weight: bold; opacity: 0; transition: 0.3s; }
+
+        /* حاوية الجدول تأخذ أغلب مساحة الصفحة */
+        .main-wrapper {
+            padding: 15px;
+            max-width: 100%;
         }
 
-        .hero-header h1 {
-            font-size: 32px;
-            font-weight: 900;
-            margin: 0;
-            letter-spacing: 1px;
-        }
-
-        .hero-header p {
-            font-size: 16px;
-            margin: 8px 0 0;
-            background: rgba(255, 255, 255, 0.1);
-            display: inline-block;
-            padding: 4px 15px;
-            border-radius: 20px;
-        }
-
-        #save-indicator {
-            display: block;
-            margin-top: 10px;
-            font-size: 12px;
-            color: #4ade80;
-            opacity: 0;
-            transition: 0.3s;
-        }
-
-        /* --- تنسيق الجدول المرتب --- */
-        .main-content {
-            max-width: 98%;
-            margin: 0 auto 80px;
+        .table-card {
             background: var(--white);
-            border-radius: 12px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             overflow: hidden;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1000px;
+            table-layout: fixed; /* توزيع الأعمدة بالتساوي */
         }
 
-        /* تثبيت رأس الجدول بلون فخم */
         thead th {
+            background: #f1f5f9;
+            color: var(--primary-blue);
+            padding: 12px 5px;
+            font-size: 14px;
+            border-bottom: 2px solid #ddd;
             position: sticky;
-            top: 0;
-            background-color: var(--primary-blue);
-            color: white;
-            padding: 18px 10px;
-            z-index: 100;
-            font-size: 15px;
-            border-bottom: 2px solid var(--accent-gold);
+            top: 83px; /* يلتصق تحت التوب بار تماماً */
+            z-index: 1000;
+            text-align: center;
         }
 
-        td {
-            border-bottom: 1px solid #f0f4f8;
-            padding: 0;
-        }
+        td { border-bottom: 1px solid #f0f0f0; padding: 0; }
 
-        /* خانات الإدخال - مريحة جداً */
         input {
             width: 100%;
-            height: 55px;
+            height: 40px; /* ارتفاع متوازن ليظهر عدد صفوف أكثر */
             border: none;
-            padding: 0 10px;
+            padding: 0 8px;
             text-align: center;
-            font-size: 15px;
+            font-size: 14px;
             font-family: 'Cairo';
-            background-color: transparent;
-            color: #444;
-            transition: 0.2s;
-        }
-
-        input:focus {
+            background: transparent;
             outline: none;
-            background-color: #fffbe6; /* تلوين الخانة عند الكتابة */
-            font-weight: bold;
         }
 
-        tr:hover { background-color: #f8fbff; }
+        input:focus { background: #fffbe6; border-bottom: 2px solid var(--secondary-blue); }
 
-        .index-col {
-            background-color: #f1f5f9;
-            font-weight: bold;
-            color: var(--primary-blue);
-            width: 50px;
-            text-align: center;
-        }
+        .m-col { width: 40px; background: #f8fafc; font-weight: bold; color: var(--primary-blue); text-align: center; }
 
-        /* زر التصدير العائم */
-        .export-fab {
-            position: fixed;
-            bottom: 25px;
-            left: 25px;
-            z-index: 1000;
+        /* زر التصدير في مكان ذكي */
+        .btn-export {
             background: #28a745;
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-size: 15px;
-            font-weight: bold;
+            padding: 8px 20px;
+            border-radius: 5px;
             font-family: 'Cairo';
+            font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-            transition: 0.3s;
+            font-size: 14px;
         }
 
-        .export-fab:hover { transform: scale(1.05); background: #218838; }
+        tr:hover { background: #f9fbff; }
 
         @media (max-width: 768px) {
-            .hero-header h1 { font-size: 24px; }
-            .logo-img { width: 110px; }
+            .brand h1 { font-size: 16px; }
+            .brand img { width: 45px; }
+            table { min-width: 800px; }
+            .table-card { overflow-x: auto; }
         }
     </style>
 </head>
 <body>
 
-    <header class="hero-header">
-        <img src="https://i.ibb.co/QF1mKFpn/IMG-8418.png" alt="شعار أكاديمية القحمة" class="logo-img">
-        <h1>أكاديمية القحمة الرياضية</h1>
-        <p>🏆 سجل بيانات ورسوم اللاعبين 🏆</p>
-        <div id="save-indicator">✓ تم الحفظ تلقائياً</div>
-    </header>
-
-    <div class="main-content">
-        <table id="playersTable">
-            <thead>
-                <tr>
-                    <th>م</th>
-                    <th>اسم اللاعب</th>
-                    <th>تاريخ التسليم</th>
-                    <th>الرسوم</th>
-                    <th>المرحلة الدراسية</th>
-                    <th>الحالة الصحية</th>
-                    <th>رقم الجوال</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
-                </tbody>
-        </table>
+    <div class="top-bar">
+        <div class="brand">
+            <img src="https://i.ibb.co/QF1mKFpn/IMG-8418.png" alt="Logo">
+            <h1>أكاديمية القحمة الرياضية</h1>
+        </div>
+        <div id="save-status">✓ جاري الحفظ...</div>
+        <button class="btn-export" onclick="exportToExcel()">📊 تصدير Excel</button>
     </div>
 
-    <button class="export-fab" onclick="exportToExcel()">📊 تصدير Excel</button>
+    <div class="main-wrapper">
+        <div class="table-card">
+            <table id="playersTable">
+                <thead>
+                    <tr>
+                        <th style="width: 40px;">م</th>
+                        <th>اسم اللاعب</th>
+                        <th>التاريخ</th>
+                        <th>الرسوم</th>
+                        <th>المرحلة</th>
+                        <th>الحالة</th>
+                        <th>الجوال</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    </tbody>
+            </table>
+        </div>
+    </div>
 
     <script>
         const tableBody = document.getElementById('tableBody');
-        const saveIndicator = document.getElementById('save-indicator');
+        const saveStatus = document.getElementById('save-status');
 
-        // توليد 100 صف
-        function initTable() {
+        function init() {
             let html = '';
             for (let i = 1; i <= 100; i++) {
                 html += `
                     <tr>
-                        <td class="index-col">${i}</td>
-                        <td><input type="text" oninput="autoSave()" placeholder="..."></td>
-                        <td><input type="text" oninput="autoSave()" placeholder="..."></td>
-                        <td><input type="text" oninput="autoSave()" placeholder="..."></td>
-                        <td><input type="text" oninput="autoSave()" placeholder="..."></td>
-                        <td><input type="text" oninput="autoSave()" placeholder="..."></td>
-                        <td><input type="text" oninput="autoSave()" placeholder="..."></td>
+                        <td class="m-col">${i}</td>
+                        <td><input type="text" oninput="save()" placeholder="..."></td>
+                        <td><input type="text" oninput="save()" placeholder="..."></td>
+                        <td><input type="text" oninput="save()" placeholder="..."></td>
+                        <td><input type="text" oninput="save()" placeholder="..."></td>
+                        <td><input type="text" oninput="save()" placeholder="..."></td>
+                        <td><input type="text" oninput="save()" placeholder="..."></td>
                     </tr>
                 `;
             }
             tableBody.innerHTML = html;
+            load();
         }
 
-        // حفظ تلقائي
         let timer;
-        function autoSave() {
+        function save() {
             clearTimeout(timer);
+            saveStatus.style.opacity = "1";
             timer = setTimeout(() => {
                 const data = [];
-                const rows = tableBody.querySelectorAll('tr');
-                rows.forEach(row => {
+                tableBody.querySelectorAll('tr').forEach(row => {
                     const vals = Array.from(row.querySelectorAll('input')).map(i => i.value);
                     if (vals.some(v => v.trim() !== "")) data.push(vals);
                 });
-                localStorage.setItem('alqahma_final_data', JSON.stringify(data));
-                
-                saveIndicator.style.opacity = "1";
-                setTimeout(() => { saveIndicator.style.opacity = "0"; }, 1000);
-            }, 700);
+                localStorage.setItem('alqahma_vfinal', JSON.stringify(data));
+                setTimeout(() => { saveStatus.style.opacity = "0"; }, 800);
+            }, 500);
         }
 
-        window.onload = () => {
-            initTable();
-            const saved = JSON.parse(localStorage.getItem('alqahma_final_data'));
+        function load() {
+            const saved = JSON.parse(localStorage.getItem('alqahma_vfinal'));
             if (saved) {
                 const rows = tableBody.querySelectorAll('tr');
                 saved.forEach((rowData, index) => {
@@ -237,20 +194,19 @@
                     }
                 });
             }
-        };
+        }
 
         function exportToExcel() {
             const table = document.getElementById("playersTable");
-            const template = `
-                <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" lang="ar">
-                <head><meta charset="utf-8"><style>table{direction:rtl; border:1px solid #ccc; font-family:Cairo;} th{background:#002d5a; color:#fff; padding:10px;} td{border:1px solid #eee; text-align:center; padding:5px;}</style></head>
-                <body>${table.outerHTML}</body></html>`;
+            const template = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" lang="ar"><head><meta charset="utf-8"><style>table{direction:rtl; border:1px solid #ccc; font-family:Cairo;} th{background:#002d5a; color:#fff;} td{border:1px solid #eee; text-align:center;}</style></head><body>${table.outerHTML}</body></html>`;
             const url = 'data:application/vnd.ms-excel;charset=utf-8,' + encodeURIComponent(template);
             const link = document.createElement("a");
             link.href = url;
             link.download = "سجل_أكاديمية_القحمة.xls";
             link.click();
         }
+
+        init();
     </script>
 </body>
 </html>
