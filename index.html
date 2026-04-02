@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>أكاديمية القحمة | النظام السلس</title>
+    <title>أكاديمية القحمة | النظام الإداري المعتمد</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -23,7 +23,7 @@
 
         body { display: flex; flex-direction: column; }
 
-        /* الهيدر الثابت تماماً في الأعلى */
+        /* الهيدر الثابت */
         .main-header {
             background: linear-gradient(180deg, var(--primary-blue) 0%, #001a35 100%);
             color: white; text-align: center; padding: 12px 10px;
@@ -37,9 +37,9 @@
         .info-row { display: flex; justify-content: center; gap: 15px; margin-top: 6px; font-size: 11px; }
         .loc { color: var(--accent-gold); font-weight: bold; }
 
-        #save-tag { font-size: 11px; color: #4ade80; height: 14px; margin-top: 4px; opacity: 0; transition: opacity 0.4s ease; }
+        #save-tag { font-size: 11px; color: #4ade80; height: 14px; margin-top: 4px; font-weight: bold; opacity: 0; transition: opacity 0.4s ease; }
 
-        /* منطقة التمرير (الجدول) */
+        /* منطقة التمرير */
         .scroll-container { 
             flex-grow: 1; 
             overflow: auto; 
@@ -49,14 +49,14 @@
 
         table { border-collapse: separate; border-spacing: 0; min-width: 1050px; background: white; }
 
-        /* تثبيت العناوين العلوية */
+        /* العناوين العلوية الثابتة */
         thead th {
             position: sticky; top: 0; background: #ffffff; color: var(--primary-blue);
             padding: 14px 8px; font-size: 14px; font-weight: 900;
             border-bottom: 2px solid #e2e8f0; z-index: 1000;
         }
 
-        /* تثبيت عنوان عمود الأرقام (م) ليكون فوق الجميع */
+        /* تثبيت تقاطع العناوين مع الأرقام */
         thead th:first-child {
             position: sticky; right: 0; z-index: 1500;
             background: #ffffff; border-left: 2px solid var(--primary-blue);
@@ -75,24 +75,23 @@
         input.has-content { background-color: var(--filled-green); }
         input:focus { background: #fffdf2 !important; border-bottom: 2px solid var(--primary-blue); }
 
-        /* السر هنا: تثبيت عمود الأرقام كجدار */
+        /* جدار الأرقام الثابت */
         .index-cell {
             background: #f1f5f9; width: 45px; font-weight: 900; font-size: 15px;
             color: var(--primary-blue); text-align: center;
-            position: sticky; right: 0; z-index: 800; /* يظل فوق الخانات العادية */
-            border-left: 2px solid var(--primary-blue); /* خط أزرق يفصله عن باقي الجدول */
-            box-shadow: -3px 0 6px rgba(0,0,0,0.05); /* ظل ليعطي بروز */
+            position: sticky; right: 0; z-index: 800;
+            border-left: 2px solid var(--primary-blue); 
+            box-shadow: -3px 0 6px rgba(0,0,0,0.05);
         }
 
-        /* زر الواتساب العائم بقوة */
+        /* زر الواتساب العائم */
         .whatsapp-btn {
             position: fixed; bottom: 25px; left: 20px;
             background-color: var(--whatsapp-green);
             color: white; border: none; padding: 12px 22px; 
             border-radius: 50px; font-family: 'Cairo'; font-size: 14px; 
             font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
-            z-index: 9999; /* أعلى طبقة في الموقع بالكامل */
-            display: flex; align-items: center; gap: 8px; text-decoration: none;
+            z-index: 9999; display: flex; align-items: center; gap: 8px; text-decoration: none;
             transition: transform 0.2s ease;
         }
 
@@ -110,7 +109,7 @@
             <div>⏰ <span id="clock">00:00:00</span></div>
             <div>☀️ <span>صافي 28°C</span></div>
         </div>
-        <div id="save-tag">✓ تم الحفظ بنجاح</div>
+        <div id="save-tag">✓ تم الحفظ للأبد في هذا الجهاز</div>
     </header>
 
     <main class="scroll-container">
@@ -137,6 +136,8 @@
     <script>
         const tableBody = document.getElementById('tableBody');
         const saveTag = document.getElementById('save-tag');
+        
+        // 🛑 الشرط الأهم: هذا المفتاح هو قبو البيانات، لا تغير اسمه أبداً في التحديثات القادمة 🛑
         const DB_KEY = 'ALQAHMA_PERMANENT_DB_FINAL'; 
 
         function init() {
@@ -155,6 +156,8 @@
                 `;
             }
             tableBody.innerHTML = rows;
+            
+            // استدعاء البيانات المحفوظة فوراً عند فتح الموقع
             loadData();
             
             setInterval(() => { 
@@ -178,25 +181,30 @@
                 const data = [];
                 tableBody.querySelectorAll('tr').forEach(row => {
                     const inputs = Array.from(row.querySelectorAll('input')).map(i => i.value);
+                    // نحفظ الصف فقط إذا كان فيه أي معلومة
                     if (inputs.some(v => v.trim() !== "")) data.push(inputs);
                 });
+                
+                // هنا يتم الحفظ في ذاكرة الجهاز (التي لا تتأثر بتحديثاتك للكود)
                 localStorage.setItem(DB_KEY, JSON.stringify(data));
+                
                 saveTag.style.opacity = "1";
-                setTimeout(() => saveTag.style.opacity = "0", 1000);
+                setTimeout(() => saveTag.style.opacity = "0", 1200);
             }, 300);
         }
 
         function loadData() {
-            const saved = JSON.parse(localStorage.getItem(DB_KEY));
-            if (saved) {
+            const savedRaw = localStorage.getItem(DB_KEY);
+            if (savedRaw) {
+                const savedData = JSON.parse(savedRaw);
                 const rows = tableBody.querySelectorAll('tr');
-                saved.forEach((rowData, index) => {
+                savedData.forEach((rowData, index) => {
                     if (rows[index]) {
                         const inputs = rows[index].querySelectorAll('input');
                         rowData.forEach((val, i) => { 
                             if(inputs[i]) {
                                 inputs[i].value = val;
-                                checkInput(inputs[i]);
+                                checkInput(inputs[i]); // لتفعيل اللون الأخضر للبيانات القديمة
                             }
                         });
                     }
@@ -205,12 +213,13 @@
         }
 
         function sendToWhatsApp() {
-            const saved = JSON.parse(localStorage.getItem(DB_KEY));
-            if (!saved || saved.length === 0) {
+            const savedRaw = localStorage.getItem(DB_KEY);
+            if (!savedRaw || JSON.parse(savedRaw).length === 0) {
                 alert("السجل فارغ! فضلاً أدخل بعض البيانات أولاً.");
                 return;
             }
 
+            const saved = JSON.parse(savedRaw);
             let message = "📦 *نسخة احتياطية مشفرة - أكاديمية القحمة* 📦\n\n";
             saved.forEach((row, index) => {
                 let name = row[0] || '---';
