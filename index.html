@@ -3,54 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أكاديمية القحمة - سجل احترافي</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <title>أكاديمية القحمة الرياضية | السجل الذكي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-blue: #003366;
-            --accent-blue: #0056b3;
-            --bg-light: #f4f9ff;
+            --primary-blue: #002d5a;
+            --secondary-blue: #0056b3;
+            --accent-gold: #ffd700; /* لمسة ذهبية للتميز الرياضي */
+            --light-bg: #f8fbff;
             --white: #ffffff;
         }
 
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: var(--bg-light);
+            background-color: var(--light-bg);
             margin: 0;
-            padding: 0; /* إلغاء الحواف ليكون الانزلاق كامل */
+            padding: 0;
+            color: #333;
         }
 
-        .container {
-            max-width: 100%; /* جعل العرض كامل الشاشة */
-            margin: auto;
-            background: var(--white);
-            min-height: 100vh;
-        }
-
-        /* هيدر ثابت أو عادي حسب رغبتك، هنا جعلته مريح */
-        .header-section {
-            background: var(--primary-blue);
+        /* --- الهيدر المنفصل الفخم --- */
+        .hero-header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
             color: white;
-            padding: 20px;
+            padding: 40px 20px;
             text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-bottom: 5px solid var(--accent-gold);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
         }
 
-        .header-section h1 { margin: 0; font-size: 24px; }
-        
-        #autoSaveStatus {
-            font-size: 14px;
-            color: #4ade80; /* أخضر فاتح */
-            margin-top: 5px;
-            height: 20px;
+        .hero-header h1 {
+            font-size: 42px;
+            font-weight: 900;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .hero-header p {
+            font-size: 18px;
+            margin: 10px 0 0;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        #save-indicator {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 5px 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            font-size: 13px;
             opacity: 0;
             transition: 0.3s;
         }
 
-        /* الجدول الآن بدون scroll داخلي، ينزل مع الصفحة */
-        .table-container {
-            width: 100%;
-            overflow-x: auto; /* للسماح بالتمرير الجانبي فقط في الجوال */
+        /* --- حاوية الجدول --- */
+        .main-content {
+            max-width: 95%;
+            margin: 0 auto 100px;
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
         }
 
         table {
@@ -59,81 +74,106 @@
             min-width: 1000px;
         }
 
-        /* العناوين تثبت في أعلى المتصفح عند النزول */
+        /* تثبيت رأس الجدول */
         thead th {
             position: sticky;
-            top: 0; /* هذا هو السر، يثبت مع نزول الصفحة */
+            top: 0;
             background-color: var(--primary-blue);
             color: white;
-            padding: 15px 10px;
-            z-index: 1000;
-            border: 1px solid #00264d;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            padding: 20px 10px;
+            z-index: 100;
+            font-size: 16px;
+            border-bottom: 3px solid var(--accent-gold);
         }
 
-        td { border: 1px solid #eee; padding: 0; }
+        td {
+            border-bottom: 1px solid #edf2f7;
+            padding: 0;
+        }
 
         input {
             width: 100%;
-            height: 55px; /* خانات واسعة ومريحة */
+            height: 60px; /* خانات واسعة جداً ومريحة */
             border: none;
             padding: 0 15px;
             text-align: center;
             font-size: 16px;
             font-family: 'Cairo';
             background-color: transparent;
-            transition: 0.2s;
+            color: #4a5568;
+            transition: all 0.2s;
         }
 
         input:focus {
             outline: none;
-            background-color: #fffde7;
-            border-bottom: 4px solid var(--accent-blue);
+            background-color: #fff9e6; /* لون تمييز عند الكتابة */
+            color: var(--primary-blue);
+            font-weight: bold;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.02);
         }
 
-        tr:nth-child(even) { background-color: #fcfdfe; }
         tr:hover { background-color: #f1f7ff; }
-
-        /* منطقة الأزرار في الأسفل */
-        .footer-bar {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 2000;
+        
+        /* تلوين عمود الرقم م */
+        .index-col {
+            background-color: #f7fafc;
+            font-weight: bold;
+            color: var(--primary-blue);
+            width: 60px;
+            text-align: center;
         }
 
-        .export-btn {
-            background-color: #28a745;
+        /* --- زر التصدير العائم --- */
+        .fab-container {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 999;
+        }
+
+        .btn-export {
+            background: var(--primary-blue);
             color: white;
             border: none;
-            padding: 15px 25px;
+            padding: 15px 30px;
             border-radius: 50px;
+            font-size: 16px;
             font-weight: bold;
             font-family: 'Cairo';
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 20px rgba(0,45,90,0.3);
             display: flex;
             align-items: center;
             gap: 10px;
+            transition: 0.3s;
         }
 
-        .export-btn:hover { transform: scale(1.05); }
+        .btn-export:hover {
+            background: var(--secondary-blue);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0,45,90,0.4);
+        }
 
+        /* تحسينات الجوال */
+        @media (max-width: 768px) {
+            .hero-header h1 { font-size: 28px; }
+            .main-content { max-width: 100%; border-radius: 0; }
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header-section">
+    <header class="hero-header">
         <h1>أكاديمية القحمة الرياضية</h1>
-        <div id="autoSaveStatus">✓ تم الحفظ تلقائياً</div>
-    </div>
+        <p>المنصة الذكية لإدارة بيانات اللاعبين</p>
+        <div id="save-indicator">✓ تم الحفظ تلقائياً</div>
+    </header>
 
-    <div class="table-container">
+    <div class="main-content">
         <table id="playersTable">
             <thead>
                 <tr>
-                    <th style="width: 50px;">م</th>
+                    <th>م</th>
                     <th>اسم اللاعب</th>
                     <th>تاريخ التسليم</th>
                     <th>الرسوم</th>
@@ -142,80 +182,85 @@
                     <th>رقم الجوال</th>
                 </tr>
             </thead>
-            <tbody id="tableBody"></tbody>
+            <tbody id="tableBody">
+                </tbody>
         </table>
     </div>
-</div>
 
-<div class="footer-bar">
-    <button class="export-btn" onclick="exportToExcel()">📊 تصدير Excel</button>
-</div>
+    <div class="fab-container">
+        <button class="btn-export" onclick="exportToExcel()">📊 تصدير ملف Excel</button>
+    </div>
 
-<script>
-    const tableBody = document.getElementById('tableBody');
-    const autoSaveStatus = document.getElementById('autoSaveStatus');
+    <script>
+        const tableBody = document.getElementById('tableBody');
+        const saveIndicator = document.getElementById('save-indicator');
 
-    function generateRows() {
-        let rowsHtml = '';
-        for (let i = 1; i <= 100; i++) {
-            rowsHtml += `
-                <tr>
-                    <td style="background:#f1f1f1; font-weight:bold; text-align:center; color:#003366;">${i}</td>
-                    <td><input type="text" oninput="autoSave()" placeholder="..."></td>
-                    <td><input type="text" oninput="autoSave()" placeholder="..."></td>
-                    <td><input type="text" oninput="autoSave()" placeholder="..."></td>
-                    <td><input type="text" oninput="autoSave()" placeholder="..."></td>
-                    <td><input type="text" oninput="autoSave()" placeholder="..."></td>
-                    <td><input type="text" oninput="autoSave()" placeholder="..."></td>
-                </tr>
-            `;
+        // توليد الصفوف
+        function initTable() {
+            let html = '';
+            for (let i = 1; i <= 100; i++) {
+                html += `
+                    <tr>
+                        <td class="index-col">${i}</td>
+                        <td><input type="text" oninput="autoSave()" placeholder="---"></td>
+                        <td><input type="text" oninput="autoSave()" placeholder="---"></td>
+                        <td><input type="text" oninput="autoSave()" placeholder="---"></td>
+                        <td><input type="text" oninput="autoSave()" placeholder="---"></td>
+                        <td><input type="text" oninput="autoSave()" placeholder="---"></td>
+                        <td><input type="text" oninput="autoSave()" placeholder="---"></td>
+                    </tr>
+                `;
+            }
+            tableBody.innerHTML = html;
         }
-        tableBody.innerHTML = rowsHtml;
-    }
 
-    let saveTimeout;
-    function autoSave() {
-        clearTimeout(saveTimeout);
-        saveTimeout = setTimeout(() => {
-            const rows = document.querySelectorAll('#tableBody tr');
-            const allData = [];
-            rows.forEach(row => {
-                const inputs = row.querySelectorAll('input');
-                const rowData = Array.from(inputs).map(input => input.value);
-                if (rowData.some(val => val.trim() !== "")) {
-                    allData.push(rowData);
-                }
-            });
-            localStorage.setItem('qahmah_final_scroll', JSON.stringify(allData));
-            autoSaveStatus.style.opacity = "1";
-            setTimeout(() => { autoSaveStatus.style.opacity = "0"; }, 1000);
-        }, 500);
-    }
-
-    window.onload = function() {
-        generateRows();
-        const saved = JSON.parse(localStorage.getItem('qahmah_final_scroll'));
-        if (saved) {
-            const rows = document.querySelectorAll('#tableBody tr');
-            saved.forEach((rowData, index) => {
-                if (rows[index]) {
-                    const inputs = rows[index].querySelectorAll('input');
-                    rowData.forEach((val, i) => { if(inputs[i]) inputs[i].value = val; });
-                }
-            });
+        // حفظ تلقائي ذكي
+        let timer;
+        function autoSave() {
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                const data = [];
+                const rows = tableBody.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const vals = Array.from(row.querySelectorAll('input')).map(i => i.value);
+                    if (vals.some(v => v.trim() !== "")) data.push(vals);
+                });
+                localStorage.setItem('alqahma_pro_data', JSON.stringify(data));
+                
+                // إشعار الحفظ
+                saveIndicator.style.opacity = "1";
+                setTimeout(() => { saveIndicator.style.opacity = "0"; }, 1500);
+            }, 800);
         }
-    };
 
-    function exportToExcel() {
-        let table = document.getElementById("playersTable");
-        let template = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" lang="ar"><head><meta charset="utf-8"><style>table{direction:rtl; border:1px solid #ccc;} th{background:#003366; color:#fff; padding:10px;} td{border:1px solid #eee; text-align:center; padding:5px;}</style></head><body>${table.outerHTML}</body></html>`;
-        let url = 'data:application/vnd.ms-excel;charset=utf-8,' + encodeURIComponent(template);
-        let link = document.createElement("a");
-        link.href = url;
-        link.download = "سجل_اكاديمية_القحمة.xls";
-        link.click();
-    }
-</script>
+        // استعادة البيانات
+        window.onload = () => {
+            initTable();
+            const saved = JSON.parse(localStorage.getItem('alqahma_pro_data'));
+            if (saved) {
+                const rows = tableBody.querySelectorAll('tr');
+                saved.forEach((rowData, index) => {
+                    if (rows[index]) {
+                        const inputs = rows[index].querySelectorAll('input');
+                        rowData.forEach((val, i) => { if(inputs[i]) inputs[i].value = val; });
+                    }
+                });
+            }
+        };
 
+        // تصدير Excel
+        function exportToExcel() {
+            const table = document.getElementById("playersTable");
+            const template = `
+                <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" lang="ar">
+                <head><meta charset="utf-8"><style>table{direction:rtl; border:1px solid #ccc; font-family:Cairo, sans-serif;} th{background:#002d5a; color:#fff; padding:10px;} td{border:1px solid #eee; text-align:center; padding:8px;}</style></head>
+                <body>${table.outerHTML}</body></html>`;
+            const url = 'data:application/vnd.ms-excel;charset=utf-8,' + encodeURIComponent(template);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "سجل_أكاديمية_القحمة_الرياضية.xls";
+            link.click();
+        }
+    </script>
 </body>
 </html>
